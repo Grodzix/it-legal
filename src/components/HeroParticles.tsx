@@ -1,0 +1,147 @@
+"use client";
+
+import { useEffect, useRef, useCallback } from "react";
+
+interface Particle {
+  x: number;
+  y: number;
+  size: number;
+  speedX: number;
+  speedY: number;
+  opacity: number;
+  rotation: number;
+  rotationSpeed: number;
+}
+
+export default function HeroParticles() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const mouseRef = useRef({ x: 0, y: 0 });
+  const particlesRef = useRef<Particle[]>([]);
+  const rafRef = useRef<number>(0);
+
+  const initParticles = useCallback((w: number, h: number) => {
+    const count = Math.min(80, Math.floor((w * h) / 12000));
+    const particles: Particle[] = [];
+    for (let i = 0; i < count; i++) {
+      particles.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        size: Math.random() * 6 + 2,
+        speedX: (Math.random() - 0.5) * 0.4,
+        speedY: (Math.random() - 0.5) * 0.3,
+        opacity: Math.random() * 0.4 + 0.1,
+        rotation: Math.random() * Math.PI * 2,
+        rotationSpeed: (Math.random() - 0.5) * 0.02,
+      });
+    }
+    particlesRef.current = particles;
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d", { alpha: true });
+    if (!ctx) return;
+
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio, 2);
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+      initParticles(rect.width, rect.height);
+    };
+
+    resize();
+    window.addEventListener("resize", resize, { passive: true });
+
+    const onMouse = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      mouseRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    };
+    window.addEventListener("mousemove", onMouse, { passive: true });
+
+    const animate = () => {
+      const rect = canvas.getBoundingClientRect();
+      const w = rect.width;
+      const h = rect.height;
+      ctx.clearRect(0, 0, w, h);
+
+      const mx = mouseRef.current.x;
+      const my = mouseRef.current.y;
+
+      for (const p of particlesRef.current) {
+        p.x += p.speedX;
+        p.y += p.speedY;
+        p.rotation += p.rotationSpeed;
+
+        // Mouse parallax
+        const dx = mx - p.x;
+        const dy = my - p.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 200) {
+          const force = (200 - dist) / 200;
+          p.x -= dx * force * 0.005;
+          p.y -= dy * force * 0.005;
+        }
+
+        // Wrap around
+        if (p.x < -20) p.x = w + 20;
+        if (p.x > w + 20) p.x = -20;
+        if (p.y < -20) p.y = h + 20;
+        if (p.y > h + 20) p.y = -20;
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rotation);
+        ctx.globalAlpha = p.opacity;
+        ctx.fillStyle = "#94A3B8";
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+        ctx.restore();
+      }
+
+      // Draw connections
+      ctx.strokeStyle = "rgba(148, 163, 184, 0.06)";
+      ctx.lineWidth = 1;
+      const particles = particlesRef.current;
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx2 = particles[i].x - particles[j].x;
+          const dy2 = particles[i].y - particles[j].y;
+          const d = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+          if (d < 140) {
+            ctx.globalAlpha = (1 - d / 140) * 0.3;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      ctx.globalAlpha = 1;
+      rafRef.current = requestAnimationFrame(animate);
+    };
+
+    // Defer animation start to not block LCP
+    const timeout = setTimeout(() => {
+      rafRef.current = requestAnimationFrame(animate);
+    }, 100);
+
+    return () => {
+      clearTimeout(timeout);
+      cancelAnimationFrame(rafRef.current);
+      window.removeEventListener("resize", resize);
+      window.removeEventListener("mousemove", onMouse);
+    };
+  }, [initParticles]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 w-full h-full pointer-events-none"
+      aria-hidden="true"
+    />
+  );
+}
