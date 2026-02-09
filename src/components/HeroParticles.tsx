@@ -18,6 +18,7 @@ export default function HeroParticles() {
   const mouseRef = useRef({ x: 0, y: 0 });
   const particlesRef = useRef<Particle[]>([]);
   const rafRef = useRef<number>(0);
+  const visibleRef = useRef(true);
 
   const initParticles = useCallback((w: number, h: number) => {
     const count = Math.min(80, Math.floor((w * h) / 12000));
@@ -121,17 +122,36 @@ export default function HeroParticles() {
       }
 
       ctx.globalAlpha = 1;
-      rafRef.current = requestAnimationFrame(animate);
+      if (visibleRef.current) {
+        rafRef.current = requestAnimationFrame(animate);
+      }
     };
+
+    // Pause when off-screen
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        visibleRef.current = entry.isIntersecting;
+        if (entry.isIntersecting) {
+          rafRef.current = requestAnimationFrame(animate);
+        } else {
+          cancelAnimationFrame(rafRef.current);
+        }
+      },
+      { threshold: 0 }
+    );
+    observer.observe(canvas);
 
     // Defer animation start to not block LCP
     const timeout = setTimeout(() => {
-      rafRef.current = requestAnimationFrame(animate);
+      if (visibleRef.current) {
+        rafRef.current = requestAnimationFrame(animate);
+      }
     }, 100);
 
     return () => {
       clearTimeout(timeout);
       cancelAnimationFrame(rafRef.current);
+      observer.disconnect();
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", onMouse);
     };
@@ -140,7 +160,7 @@ export default function HeroParticles() {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 w-full h-full pointer-events-none"
+      className="absolute top-0 bottom-0 right-0 lg:left-[52%] xl:left-[56%] w-full lg:w-[48%] xl:w-[44%] h-full pointer-events-none"
       aria-hidden="true"
     />
   );

@@ -42,13 +42,6 @@ function AnimatedCounter({
   );
 }
 
-// Positions for floating badges over the lawyer photo (desktop only)
-// These are relative to the viewport right side where the photo sits
-const badgeStyles: React.CSSProperties[] = [
-  { top: "18%", right: "38%"  },
-  { top: "44%", right: "42%" },
-  { top: "68%", right: "34%"  },
-];
 
 export default function HeroStats() {
   const ref = useRef<HTMLDivElement>(null);
@@ -74,38 +67,7 @@ export default function HeroStats() {
 
   return (
     <div ref={ref}>
-      {/* ===== DESKTOP: Floating glass badges over the lawyer photo ===== */}
-      <div className="hidden lg:block">
-        {trustStats.map((stat, i) => (
-          <div
-            key={stat.label}
-            className="hero-word absolute z-20"
-            style={{
-              ...badgeStyles[i],
-              animationDelay: `${i * 200 + 900}ms`,
-            }}
-          >
-            <div
-              className="stat-float"
-              style={{ animationDelay: `${i * 1.5}s` }}
-            >
-              <div className="glass rounded-2xl px-5 py-4 shadow-xl border border-white/50 backdrop-blur-2xl min-w-[140px]">
-                <div className="text-2xl xl:text-3xl font-bold leading-none tracking-tight">
-                  <AnimatedCounter
-                    value={stat.value}
-                    prefix={stat.prefix}
-                    suffix={stat.suffix}
-                    triggered={triggered}
-                  />
-                </div>
-                <p className="text-[0.6rem] xl:text-[0.65rem] text-text-medium font-semibold tracking-wider uppercase mt-1.5 whitespace-nowrap">
-                  {stat.label}
-                </p>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+      {/* Desktop stats hidden — photo speaks for itself */}
 
       {/* ===== MOBILE: Stats row below photo (rendered in HeroSection) ===== */}
       <div className="lg:hidden fixed-mobile-stats">

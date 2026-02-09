@@ -26,6 +26,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-y: scroll;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -193,6 +194,18 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 12px 40px rgba(73, 133, 201, 0.15), 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
+/* ===== SPEC CARD ===== */
+.spec-card {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+}
+
+.spec-card:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 16px 48px rgba(73, 133, 201, 0.12),
+    0 6px 16px rgba(0, 0, 0, 0.04);
+}
+
 /* ===== CTA BUTTON ARROW PULSE ===== */
 .cta-arrow {
   animation: pulse 2.5s ease-in-out infinite;
@@ -251,9 +264,7 @@ h1, h2, h3, h4, h5, h6 {
   width: max-content;
 }
 
-.marquee-track:hover {
-  animation-play-state: paused;
-}
+/* marquee always scrolls, no pause on hover */
 
 /* ===== STAT GRADIENT TEXT ===== */
 .stat-gradient-text {

@@ -44,7 +44,7 @@ export async function submitContactForm(
 
   try {
     // TODO: Integrate with email API (e.g., Resend, SendGrid, Cloudflare Email Workers)
-    console.log("Contact form submission:", { name, email, phone, message });
+    // Form data: { name, email, phone, message }
 
     return {
       success: true,

@@ -1,7 +1,9 @@
 import Image from "next/image";
-import { heroData, siteConfig } from "@/lib/data";
+import { heroData } from "@/lib/data";
 import HeroParticles from "./HeroParticles";
 import HeroStats from "./HeroStats";
+import PhonePopover from "./PhonePopover";
+import NoiseBackground from "./ui/NoiseBackground";
 
 export default function HeroSection() {
   const words = heroData.heading.split(" ");
@@ -35,17 +37,17 @@ export default function HeroSection() {
         aria-hidden="true"
       >
         {/* Gradient fade from left for smooth blend */}
-        <div className="absolute inset-0 z-[2] bg-gradient-to-r from-bg-light via-bg-light/60 to-transparent w-[35%]" />
+        <div className="absolute inset-0 z-[2] bg-gradient-to-r from-bg-light to-transparent w-[20%]" />
 
         {/* Subtle glow behind */}
         <div className="absolute bottom-0 right-[10%] w-[70%] h-[60%] rounded-full bg-primary/[0.04] blur-3xl" />
 
         <Image
-          src="/lawyer-transarent.png"
+          src="/lawyer-transparent.png"
           alt=""
           width={840}
           height={1050}
-          className="relative z-[1] h-full w-auto max-w-none object-contain object-right-bottom ml-auto drop-shadow-2xl"
+          className="relative z-[1] h-full w-auto max-w-none object-contain object-bottom mr-[8%] ml-auto drop-shadow-2xl"
           priority
           sizes="(min-width: 1024px) 48vw, 0vw"
         />
@@ -64,7 +66,7 @@ export default function HeroSection() {
               className="hero-word section-label mb-5"
               style={{ animationDelay: "100ms" }}
             >
-              Kancelaria prawna IT/Tech
+              Kancelaria prawna
             </p>
 
             {/* Heading with staggered word reveal */}
@@ -90,7 +92,7 @@ export default function HeroSection() {
 
             {/* Subtitle */}
             <p
-              className="hero-word text-lg sm:text-xl text-text-medium leading-relaxed max-w-lg"
+              className="hero-word text-lg sm:text-xl text-text-medium leading-relaxed max-w-lg text-justify"
               style={{ animationDelay: "800ms" }}
             >
               {heroData.subheading}
@@ -101,47 +103,41 @@ export default function HeroSection() {
               className="hero-word flex flex-wrap items-center gap-4 mt-10"
               style={{ animationDelay: "1000ms" }}
             >
-              <a
-                href="#kontakt"
-                className="group inline-flex items-center gap-3 rounded-full bg-primary px-8 py-4 text-base font-semibold text-white shadow-lg shadow-primary/25 hover:bg-primary-dark transition-all duration-300 hover:shadow-xl hover:shadow-primary/30"
+              <NoiseBackground
+                containerClassName="rounded-full p-2 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-shadow duration-300"
+                gradientColors={[
+                  "rgb(73, 133, 201)",
+                  "rgb(58, 107, 168)",
+                  "rgb(140, 190, 230)",
+                ]}
+                noiseIntensity={0.12}
+                speed={1.2}
               >
-                <span>{heroData.ctaPrimary}</span>
-                <span className="cta-arrow inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/20">
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
-                    className="transition-transform group-hover:translate-x-0.5"
-                  >
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </span>
-              </a>
-              <a
-                href={`tel:${siteConfig.phone}`}
-                className="inline-flex items-center gap-2.5 rounded-full border border-text-dark/12 px-7 py-4 text-base font-medium text-text-dark hover:border-primary hover:text-primary transition-colors duration-300"
-              >
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
+                <a
+                  href="#kontakt"
+                  className="group relative inline-flex items-center gap-3 rounded-full pl-8 pr-1.5 py-1.5 text-[0.95rem] font-semibold text-text-dark transition-all duration-200 active:scale-[0.98]"
                 >
-                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" />
-                </svg>
-                {siteConfig.phoneDisplay}
-              </a>
+                  {/* White overlay that fades out towards the arrow */}
+                  <span className="absolute inset-0 rounded-full bg-gradient-to-r from-white/85 via-white/80 to-white/20 backdrop-blur-sm pointer-events-none" />
+                  <span className="relative">{heroData.ctaPrimary}</span>
+                  <span className="relative inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/25 backdrop-blur-sm text-text-dark ring-1 ring-white/30 transition-all duration-300 group-hover:bg-white/35 group-hover:translate-x-0.5 group-hover:ring-white/50">
+                    <svg
+                      width="15"
+                      height="15"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                  </span>
+                </a>
+              </NoiseBackground>
+              <PhonePopover />
             </div>
           </div>
 
@@ -153,20 +149,22 @@ export default function HeroSection() {
                 aria-hidden="true"
               />
               <Image
-                src="/lawyer-transarent.png"
+                src="/lawyer-transparent.png"
                 alt="Paweł Sokołowski – Radca Prawny, IT Legal"
                 width={420}
                 height={525}
                 className="relative w-full h-auto drop-shadow-xl"
+                priority
+                sizes="(max-width: 640px) 208px, 256px"
               />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator — centered within left content area */}
       <div
-        className="relative z-10 flex justify-center pb-8 hero-word"
+        className="relative z-10 flex pb-8 hero-word lg:pr-[48%] xl:pr-[44%] justify-center"
         style={{ animationDelay: "1500ms" }}
       >
         <a

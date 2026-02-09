@@ -51,12 +51,21 @@ export const metadata: Metadata = {
     siteName: "IT Legal",
     locale: "pl_PL",
     type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "IT Legal – Kancelaria Prawna dla Sektora IT/Tech",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "IT Legal – Kancelaria Prawna dla Sektora IT/Tech",
     description:
       "Kompleksowe wsparcie prawne dla firm IT/Tech. Umowy, IP, RODO, cloud, blockchain, AI.",
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,
