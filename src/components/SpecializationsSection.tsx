@@ -109,7 +109,7 @@ export default function SpecializationsSection() {
               <ScrollReveal key={i} delay={i * 80}>
                 <Link
                   href={`/specjalizacje/${spec.slug}`}
-                  className="relative overflow-hidden rounded-xl border border-text-dark/[0.08] bg-gradient-to-b from-primary/[0.06] via-bg-light to-bg-light p-5 sm:p-7 flex flex-col h-[230px] group hover:border-primary/20 hover:shadow-lg transition-all duration-500 block"
+                  className="relative overflow-hidden rounded-xl border border-text-dark/[0.08] bg-gradient-to-b from-primary/[0.06] via-bg-light to-bg-light p-5 sm:p-7 flex flex-col min-h-[200px] sm:h-[230px] group hover:border-primary/20 hover:shadow-lg transition-all duration-500 block"
                 >
                   {/* Watermark icon (skip for "Inne") */}
                   {spec.icon !== "dots" && (
@@ -158,7 +158,7 @@ export default function SpecializationsSection() {
 
           {/* CTA Card */}
           <ScrollReveal delay={8 * 80} className="sm:col-span-2 lg:col-span-1">
-            <div className="relative overflow-hidden rounded-xl border border-primary/15 bg-gradient-to-b from-primary/[0.08] via-primary/[0.03] to-bg-light p-5 sm:p-7 flex flex-col items-center justify-center text-center h-[230px]">
+            <div className="relative overflow-hidden rounded-xl border border-primary/15 bg-gradient-to-b from-primary/[0.08] via-primary/[0.03] to-bg-light p-5 sm:p-7 flex flex-col items-center justify-center text-center min-h-[200px] sm:h-[230px]">
               <span
                 className="text-4xl sm:text-5xl font-heading stat-gradient-text opacity-15 leading-none select-none mb-5"
                 aria-hidden="true"

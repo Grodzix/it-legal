@@ -22,7 +22,9 @@ export default function HeroParticles() {
   const sizeRef = useRef({ w: 0, h: 0 });
 
   const initParticles = useCallback((w: number, h: number) => {
-    const count = Math.min(80, Math.floor((w * h) / 12000));
+    const isMobile = w < 768;
+    const maxCount = isMobile ? 25 : 80;
+    const count = Math.min(maxCount, Math.floor((w * h) / 12000));
     const particles: Particle[] = [];
     for (let i = 0; i < count; i++) {
       particles.push({
@@ -102,21 +104,23 @@ export default function HeroParticles() {
         ctx.restore();
       }
 
-      // Draw connections
-      ctx.strokeStyle = "rgba(148, 163, 184, 0.06)";
-      ctx.lineWidth = 1;
-      const particles = particlesRef.current;
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx2 = particles[i].x - particles[j].x;
-          const dy2 = particles[i].y - particles[j].y;
-          const d = Math.sqrt(dx2 * dx2 + dy2 * dy2);
-          if (d < 140) {
-            ctx.globalAlpha = (1 - d / 140) * 0.3;
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
+      // Draw connections (skip on mobile for performance)
+      if (w >= 768) {
+        ctx.strokeStyle = "rgba(148, 163, 184, 0.06)";
+        ctx.lineWidth = 1;
+        const particles = particlesRef.current;
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx2 = particles[i].x - particles[j].x;
+            const dy2 = particles[i].y - particles[j].y;
+            const d = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+            if (d < 140) {
+              ctx.globalAlpha = (1 - d / 140) * 0.3;
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.stroke();
+            }
           }
         }
       }

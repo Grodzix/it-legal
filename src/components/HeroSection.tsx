@@ -57,7 +57,7 @@ export default function HeroSection() {
       <HeroStats />
 
       {/* Main content */}
-      <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-8 w-full flex-1 flex items-center pt-24 pb-20 lg:pt-0 lg:pb-0">
+      <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-8 w-full flex-1 flex items-center pt-24 pb-10 sm:pb-20 lg:pt-0 lg:pb-0">
         <div className="w-full">
           {/* Left content — limited width so it doesn't overlap photo */}
           <div className="max-w-full lg:max-w-[52%] xl:max-w-[55%]">
@@ -92,7 +92,7 @@ export default function HeroSection() {
 
             {/* Subtitle */}
             <p
-              className="hero-word text-lg sm:text-xl text-text-medium leading-relaxed max-w-lg text-justify"
+              className="hero-word text-lg sm:text-xl text-text-medium leading-relaxed max-w-lg"
               style={{ animationDelay: "800ms" }}
             >
               {heroData.subheading}
@@ -141,28 +141,7 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* Mobile: photo + stats */}
-          <div className="lg:hidden mt-12">
-            <div className="relative w-52 sm:w-64 mx-auto mb-8">
-              <div
-                className="absolute inset-0 rounded-full bg-primary/[0.06] blur-2xl scale-90"
-                aria-hidden="true"
-              />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <picture>
-                <source srcSet="/portret.avif" type="image/avif" />
-                <img
-                  src="/portret.jpg"
-                  alt="Paweł Sokołowski – Radca Prawny, IT Legal"
-                  width={880}
-                  height={958}
-                  loading="lazy"
-                  decoding="async"
-                  className="relative w-full h-auto drop-shadow-xl rounded-2xl"
-                />
-              </picture>
-            </div>
-          </div>
+          {/* Photo visible only on desktop (absolute positioned above) */}
         </div>
       </div>
 

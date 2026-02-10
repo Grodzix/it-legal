@@ -72,12 +72,6 @@ export default function MobileNav() {
           ))}
           <div className="mt-6 flex flex-col gap-4">
             <a
-              href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}
-              className="text-sm text-text-medium hover:text-primary transition-colors"
-            >
-              {siteConfig.phoneDisplay}
-            </a>
-            <a
               href="#kontakt"
               onClick={() => setOpen(false)}
               className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white"
