@@ -22,7 +22,7 @@ export default function PricingSection() {
           </p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
           {pricingData.tiers.map((tier, i) => (
             <ScrollReveal key={i} delay={i * 120}>
               <div
@@ -32,6 +32,7 @@ export default function PricingSection() {
                     : "glass shadow-md"
                 }`}
               >
+                {/* Name + Price — always at top so prices align across cards */}
                 <h3
                   className={`text-xl font-bold ${
                     tier.highlighted ? "text-white" : "text-text-dark"
@@ -39,15 +40,37 @@ export default function PricingSection() {
                 >
                   {tier.name}
                 </h3>
+
+                {tier.price && (
+                  <div className="mt-3">
+                    <span
+                      className={`text-3xl font-bold ${
+                        tier.highlighted ? "text-white" : "text-text-dark"
+                      }`}
+                    >
+                      {tier.price}
+                    </span>
+                    {tier.priceSuffix && (
+                      <span
+                        className={`ml-2 text-sm ${
+                          tier.highlighted ? "text-white/70" : "text-text-light"
+                        }`}
+                      >
+                        {tier.priceSuffix}
+                      </span>
+                    )}
+                  </div>
+                )}
+
                 <p
-                  className={`mt-2 text-sm leading-relaxed ${
+                  className={`mt-4 text-sm leading-relaxed ${
                     tier.highlighted ? "text-white/80" : "text-text-medium"
                   }`}
                 >
                   {tier.description}
                 </p>
 
-                <ul className="mt-8 space-y-3 flex-1">
+                <ul className="mt-6 space-y-3 flex-1">
                   {tier.features.map((feature, j) => (
                     <li key={j} className="flex items-start gap-3">
                       <svg
@@ -107,6 +130,7 @@ export default function PricingSection() {
 
         <ScrollReveal className="text-center mt-10">
           <p className="text-sm text-text-medium">
+            {pricingData.footnote}.{" "}
             Każda wycena jest indywidualna i zależy od zakresu oraz
             złożoności sprawy.{" "}
             <a href="#kontakt" className="text-primary font-medium hover:underline">

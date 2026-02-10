@@ -48,7 +48,7 @@ export default function HeroSection() {
             height={1916}
             fetchPriority="high"
             decoding="async"
-            className="relative z-[1] w-[103%] max-w-none max-h-full object-contain object-bottom drop-shadow-2xl -translate-x-[12%]"
+            className="relative z-[1] w-[103%] max-w-none max-h-full object-contain object-bottom drop-shadow-2xl -translate-x-[18%]"
           />
         </picture>
       </div>

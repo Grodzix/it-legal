@@ -5,7 +5,7 @@ import ScrollReveal from "./ScrollReveal";
 function SpecIcon({ icon }: { icon: string }) {
   const icons: Record<string, React.ReactNode> = {
     contract: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
         <polyline points="14 2 14 8 20 8" />
         <line x1="16" y1="13" x2="8" y2="13" />
@@ -13,31 +13,31 @@ function SpecIcon({ icon }: { icon: string }) {
       </svg>
     ),
     shield: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
         <path d="M9 12l2 2 4-4" />
       </svg>
     ),
     cloud: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
       </svg>
     ),
     lock: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
         <path d="M7 11V7a5 5 0 0 1 10 0v4" />
       </svg>
     ),
     cube: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
         <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
         <line x1="12" y1="22.08" x2="12" y2="12" />
       </svg>
     ),
     brain: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <rect x="5" y="5" width="14" height="14" rx="2" />
         <circle cx="12" cy="12" r="3" />
         <path d="M9 2v3" />
@@ -51,7 +51,7 @@ function SpecIcon({ icon }: { icon: string }) {
       </svg>
     ),
     tax: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <rect x="2" y="3" width="20" height="18" rx="2" />
         <path d="M8 7v10" />
         <path d="M12 7v10" />
@@ -60,7 +60,7 @@ function SpecIcon({ icon }: { icon: string }) {
       </svg>
     ),
     dots: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="1" fill="currentColor" />
         <circle cx="19" cy="12" r="1" fill="currentColor" />
         <circle cx="5" cy="12" r="1" fill="currentColor" />
@@ -111,13 +111,15 @@ export default function SpecializationsSection() {
                   href={`/specjalizacje/${spec.slug}`}
                   className="relative overflow-hidden rounded-xl border border-text-dark/[0.08] bg-gradient-to-b from-primary/[0.06] via-bg-light to-bg-light p-5 sm:p-7 flex flex-col h-[230px] group hover:border-primary/20 hover:shadow-lg transition-all duration-500 block"
                 >
-                  {/* Watermark icon */}
-                  <div
-                    className="absolute top-4 right-4 text-primary/[0.07] group-hover:text-primary/[0.14] transition-colors duration-500 pointer-events-none w-12 h-12 sm:w-14 sm:h-14 [&>svg]:w-full [&>svg]:h-full"
-                    aria-hidden="true"
-                  >
-                    <SpecIcon icon={spec.icon} />
-                  </div>
+                  {/* Watermark icon (skip for "Inne") */}
+                  {spec.icon !== "dots" && (
+                    <div
+                      className="absolute top-4 right-4 text-primary/30 group-hover:text-primary/50 transition-colors duration-500 pointer-events-none w-16 h-16 sm:w-20 sm:h-20 [&>svg]:w-full [&>svg]:h-full"
+                      aria-hidden="true"
+                    >
+                      <SpecIcon icon={spec.icon} />
+                    </div>
+                  )}
 
                   {/* Roman numeral */}
                   <span className="text-4xl sm:text-5xl font-heading stat-gradient-text opacity-25 group-hover:opacity-40 transition-opacity duration-500 leading-none select-none">

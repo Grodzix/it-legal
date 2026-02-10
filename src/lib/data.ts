@@ -141,6 +141,8 @@ export interface Testimonial {
   author: string;
   role: string;
   company: string;
+  /** URL logo firmy — wymaga zgody na wykorzystanie znaku towarowego */
+  logo?: string;
 }
 
 export const testimonials: Testimonial[] = [
@@ -184,6 +186,8 @@ export const testimonials: Testimonial[] = [
 export interface PricingTier {
   name: string;
   description: string;
+  price?: string;
+  priceSuffix?: string;
   features: string[];
   cta: string;
   highlighted?: boolean;
@@ -196,42 +200,62 @@ export const pricingData = {
     "Oferujemy elastyczne modele rozliczeń dostosowane do potrzeb Twojego biznesu.",
   tiers: [
     {
-      name: "Konsultacja",
-      description: "Jednorazowa porada prawna lub opinia",
+      name: "Rozmowa o współpracy",
+      description: "Poznajmy się i omówmy Twoje potrzeby prawne",
+      price: "Bezpłatna",
       features: [
-        "Analiza problemu prawnego",
-        "Pisemna opinia prawna",
-        "Rekomendacje działań",
-        "Czas realizacji: do 3 dni",
+        "Wstępna analiza potrzeb",
+        "Omówienie zakresu współpracy",
+        "Propozycja modelu rozliczeń",
+        "Bez zobowiązań",
+      ],
+      cta: "Umów rozmowę",
+    },
+    {
+      name: "Standard express",
+      description:
+        "Szybka i rzetelna porada prawna w krótkim czasie. Konkretna odpowiedź radcy prawnego na Twoje pytania przez telefon.",
+      price: "120 zł",
+      priceSuffix: "/ 30 min konsultacji",
+      features: [
+        "Szybki kontakt z prawnikiem",
+        "Natychmiastowa odpowiedź na pytania",
+        "Rozwiązanie drobnych problemów prawnych",
       ],
       cta: "Umów konsultację",
     },
     {
-      name: "Projekt",
-      description: "Obsługa konkretnego projektu lub transakcji",
+      name: "Standard",
+      description:
+        "Profesjonalne wsparcie przy jednorazowym zagadnieniu prawnym, np. kompleksowa analiza umowy wraz z komentarzem, wskazaniem ryzyk oraz propozycją alternatywnego wordingu.",
+      price: "199 zł",
+      priceSuffix: "/ 1h konsultacji",
+      features: [
+        "Szczegółowe omówienie Twojej sprawy",
+        "Odpowiedzi na wszystkie pytania",
+        "Indywidualna konsultacja z prawnikiem",
+        "Rekomendacje dalszych działań",
+      ],
+      cta: "Umów konsultację",
+      highlighted: true,
+    },
+    {
+      name: "Projekt lub abonament",
+      description:
+        "Obsługa konkretnego projektu, transakcji lub stała obsługa prawna Twojej firmy",
+      price: "Indywidualnie",
+      priceSuffix: "porozmawiajmy o szczegółach",
       features: [
         "Dedykowany prawnik",
         "Przygotowanie / negocjacja umów",
         "Wsparcie do zakończenia projektu",
         "Ryczałt lub stawka godzinowa",
-        "Raportowanie postępów",
+        "Audyty i przeglądy prawne",
       ],
       cta: "Zapytaj o wycenę",
-      highlighted: true,
-    },
-    {
-      name: "Abonament",
-      description: "Stała obsługa prawna Twojej firmy",
-      features: [
-        "Stały opiekun prawny",
-        "Priorytetowy czas reakcji",
-        "Miesięczna pula godzin",
-        "Audyty i przeglądy prawne",
-        "Szkolenia dla zespołu",
-      ],
-      cta: "Poznaj szczegóły",
     },
   ] as PricingTier[],
+  footnote: "Wszystkie ceny netto",
 } as const;
 
 export interface BlogPost {
@@ -263,6 +287,48 @@ export const knowledgeBaseData = {
       category: "Kontrakty IT",
       date: "30 maja 2024",
       slug: "umowy-it-przewodnik-po-rodzajach-umow-kluczowych-klauzulach",
+    },
+    {
+      title: "Ochrona Kodów: Prawo Autorskie a Oprogramowanie Komputerowe",
+      excerpt:
+        "W dzisiejszym cyfrowym świecie, oprogramowanie komputerowe odgrywa kluczową rolę w wielu aspektach życia codziennego i działalności gospodarczej. Z tego powodu ochrona praw autorskich do oprogramowania staje się coraz ważniejsza.",
+      category: "Kontrakty IT",
+      date: "20 maja 2024",
+      slug: "ochrona-kodow-prawo-autorskie-a-oprogramowanie-komputerowe",
+    },
+    {
+      title:
+        "Podatkowe Puzzle w IT: Jak Zarządzać Obowiązkami Podatkowymi w Branży Technologicznej",
+      excerpt:
+        "Branża IT, charakteryzująca się dynamicznym rozwojem i innowacyjnością, stoi przed wieloma wyzwaniami podatkowymi. Zrozumienie i prawidłowe stosowanie przepisów podatkowych jest kluczowe dla firm działających w sektorze technologicznym.",
+      category: "IP box / 50% KUP",
+      date: "10 maja 2024",
+      slug: "podatkowe-puzzle-w-it-jak-zarzadzac-obowiazkami-podatkowymi",
+    },
+    {
+      title:
+        "Chmura obliczeniowa pod lupą prawną: Jak zabezpieczyć dane i prywatność w erze cyfrowej",
+      excerpt:
+        "Chmura obliczeniowa stała się nieodłącznym elementem współczesnych systemów IT, oferując przedsiębiorstwom elastyczność, skalowalność i oszczędności kosztów. Jednakże, wraz z jej popularnością, pojawiają się liczne wyzwania prawne.",
+      category: "Cloud computing",
+      date: "1 maja 2024",
+      slug: "chmura-obliczeniowa-pod-lupa-prawna",
+    },
+    {
+      title: "Blockchain i prawo: Jak prawo nadąża za technologią?",
+      excerpt:
+        "Blockchain, znany głównie jako technologia stojąca za kryptowalutami, takimi jak Bitcoin, znajduje coraz szersze zastosowanie w różnych dziedzinach, od finansów po logistykę i administrację publiczną.",
+      category: "Blockchain",
+      date: "20 kwietnia 2024",
+      slug: "blockchain-i-prawo-jak-prawo-nadaza-za-technologia",
+    },
+    {
+      title: "Start w IT: Jak Założyć Firmę Technologiczną w Polsce",
+      excerpt:
+        "Zakładanie firmy IT w Polsce to proces, który wymaga zrozumienia i przestrzegania wielu aspektów prawnych. Przepisy regulujące zakładanie i prowadzenie działalności gospodarczej mają na celu zapewnienie, że firma będzie działać zgodnie z prawem.",
+      category: "Prawo pracy",
+      date: "10 kwietnia 2024",
+      slug: "start-w-it-jak-zalozyc-firme-technologiczna-w-polsce",
     },
   ] as BlogPost[],
 };

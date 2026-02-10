@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState, useCallback, useEffect } from "react";
 import { submitContactForm, type ContactFormState } from "@/actions/contact";
 import { contactData, siteConfig } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
@@ -11,10 +11,57 @@ const initialState: ContactFormState = {
   fieldErrors: {},
 };
 
+const MESSAGE_MAX = 2000;
+
+/** Strip all characters except digits, +, spaces, hyphens, parens */
+function sanitizePhone(value: string) {
+  return value.replace(/[^\d+\s()-]/g, "");
+}
+
 export default function ContactSection() {
   const [state, formAction, pending] = useActionState(
     submitContactForm,
     initialState
+  );
+  const [messageLen, setMessageLen] = useState(0);
+  const [calOpen, setCalOpen] = useState(false);
+
+  // Load Cal.com embed script lazily
+  useEffect(() => {
+    if (!calOpen) return;
+    // TODO: Zastąp "it-legal/konsultacja" właściwym linkiem Cal.com klienta
+    const script = document.createElement("script");
+    script.src = "https://app.cal.com/embed/embed.js";
+    script.async = true;
+    script.onload = () => {
+      // @ts-expect-error Cal global from embed script
+      if (window.Cal) {
+        // @ts-expect-error Cal global from embed script
+        window.Cal("ui", {
+          theme: "light",
+          styles: { branding: { brandColor: "#4985C9" } },
+        });
+        // @ts-expect-error Cal global from embed script
+        window.Cal("modal", {
+          calLink: "it-legal/konsultacja",
+        });
+      }
+    };
+    document.head.appendChild(script);
+    return () => {
+      script.remove();
+    };
+  }, [calOpen]);
+
+  const handlePhoneInput = useCallback(
+    (e: React.FormEvent<HTMLInputElement>) => {
+      const input = e.currentTarget;
+      const cleaned = sanitizePhone(input.value);
+      if (cleaned !== input.value) {
+        input.value = cleaned;
+      }
+    },
+    []
   );
 
   return (
@@ -87,10 +134,33 @@ export default function ContactSection() {
                 <h3 className="text-lg font-semibold text-text-dark mb-3">
                   Szybka odpowiedź
                 </h3>
-                <p className="text-text-medium text-sm leading-relaxed">
+                <p className="text-text-medium text-sm leading-relaxed mb-5">
                   Odpowiadamy na zapytania w ciągu 24 godzin roboczych.
                   Pierwsza konsultacja jest bezpłatna.
                 </p>
+                {/* TODO: Zastąp "it-legal/konsultacja" właściwym linkiem Cal.com klienta */}
+                <button
+                  onClick={() => setCalOpen(true)}
+                  className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-primary-dark transition-colors shadow-md cursor-pointer"
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                    <line x1="16" y1="2" x2="16" y2="6" />
+                    <line x1="8" y1="2" x2="8" y2="6" />
+                    <line x1="3" y1="10" x2="21" y2="10" />
+                  </svg>
+                  Umów spotkanie
+                </button>
               </div>
             </div>
           </ScrollReveal>
@@ -134,6 +204,7 @@ export default function ContactSection() {
                         id="contact-name"
                         name="name"
                         required
+                        maxLength={100}
                         autoComplete="name"
                         className="w-full rounded-xl border border-bg-medium bg-white/50 px-4 py-3 text-text-dark placeholder:text-text-light focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
                         placeholder="Jan Kowalski"
@@ -155,6 +226,7 @@ export default function ContactSection() {
                         id="contact-email"
                         name="email"
                         required
+                        maxLength={254}
                         autoComplete="email"
                         className="w-full rounded-xl border border-bg-medium bg-white/50 px-4 py-3 text-text-dark placeholder:text-text-light focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
                         placeholder="jan@firma.pl"
@@ -177,6 +249,9 @@ export default function ContactSection() {
                       id="contact-phone"
                       name="phone"
                       autoComplete="tel"
+                      inputMode="tel"
+                      maxLength={20}
+                      onInput={handlePhoneInput}
                       className="w-full rounded-xl border border-bg-medium bg-white/50 px-4 py-3 text-text-dark placeholder:text-text-light focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
                       placeholder="+48 123 456 789"
                     />
@@ -197,12 +272,31 @@ export default function ContactSection() {
                       name="message"
                       required
                       rows={5}
+                      maxLength={MESSAGE_MAX}
+                      onInput={(e) =>
+                        setMessageLen(e.currentTarget.value.length)
+                      }
                       className="w-full rounded-xl border border-bg-medium bg-white/50 px-4 py-3 text-text-dark placeholder:text-text-light focus:border-primary focus:ring-1 focus:ring-primary transition-colors resize-y"
                       placeholder="Opisz w czym możemy pomóc..."
                     />
-                    {state.fieldErrors.message && (
-                      <p className="mt-1 text-sm text-red-600">{state.fieldErrors.message}</p>
-                    )}
+                    <div className="flex justify-between items-center mt-1">
+                      {state.fieldErrors.message ? (
+                        <p className="text-sm text-red-600">
+                          {state.fieldErrors.message}
+                        </p>
+                      ) : (
+                        <span />
+                      )}
+                      <span
+                        className={`text-xs tabular-nums ${
+                          messageLen > MESSAGE_MAX * 0.9
+                            ? "text-red-500"
+                            : "text-text-light"
+                        }`}
+                      >
+                        {messageLen} / {MESSAGE_MAX}
+                      </span>
+                    </div>
                   </div>
 
                   <div className="mt-5">

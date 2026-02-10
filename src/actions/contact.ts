@@ -6,6 +6,8 @@ export interface ContactFormState {
   fieldErrors: Record<string, string>;
 }
 
+// TODO: Rate limiting — dodać po wdrożeniu backendu (np. Cloudflare Workers KV)
+
 export async function submitContactForm(
   _prevState: ContactFormState,
   formData: FormData
@@ -18,20 +20,35 @@ export async function submitContactForm(
 
   const fieldErrors: Record<string, string> = {};
 
+  // Name: 2–100 chars
   if (!name || name.length < 2) {
     fieldErrors.name = "Podaj imię i nazwisko (min. 2 znaki)";
+  } else if (name.length > 100) {
+    fieldErrors.name = "Imię i nazwisko: max. 100 znaków";
   }
 
+  // Email: valid format, max 254 chars (RFC 5321)
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     fieldErrors.email = "Podaj prawidłowy adres e-mail";
+  } else if (email.length > 254) {
+    fieldErrors.email = "Adres e-mail: max. 254 znaki";
   }
 
-  if (phone && !/^[+\d\s()-]{7,20}$/.test(phone)) {
-    fieldErrors.phone = "Podaj prawidłowy numer telefonu";
+  // Phone (optional): strip non-digits, check 7–15 digits (E.164)
+  if (phone) {
+    const digitsOnly = phone.replace(/\D/g, "");
+    if (digitsOnly.length < 7 || digitsOnly.length > 15) {
+      fieldErrors.phone = "Podaj prawidłowy numer telefonu (7–15 cyfr)";
+    } else if (!/^[+\d\s()-]{7,20}$/.test(phone)) {
+      fieldErrors.phone = "Numer telefonu zawiera niedozwolone znaki";
+    }
   }
 
+  // Message: 10–2000 chars
   if (!message || message.length < 10) {
     fieldErrors.message = "Wiadomość musi mieć min. 10 znaków";
+  } else if (message.length > 2000) {
+    fieldErrors.message = "Wiadomość: max. 2000 znaków";
   }
 
   if (!rodo) {

@@ -33,7 +33,7 @@ export default function Header() {
 
       {/* Desktop nav — starts where the white/photo area begins */}
       <nav
-        className="hidden lg:flex items-center justify-center gap-6 xl:gap-8 absolute top-1/2 -translate-y-1/2 left-[52%] xl:left-[56%] right-0"
+        className="hidden lg:flex items-center justify-center gap-6 xl:gap-8 absolute top-1/2 -translate-y-1/2 left-[52%] xl:left-[56%] right-5 sm:right-8 xl:right-[max(2rem,calc((100vw-80rem)/2+2rem))]"
         aria-label="Nawigacja główna"
       >
         {navLinks.map((link) => (
