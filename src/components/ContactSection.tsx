@@ -20,7 +20,7 @@ export default function ContactSection() {
   return (
     <section
       id="kontakt"
-      className="py-16 sm:py-20"
+      className="py-12 sm:py-16"
       aria-labelledby="contact-heading"
     >
       <div className="mx-auto max-w-7xl px-5 sm:px-8">

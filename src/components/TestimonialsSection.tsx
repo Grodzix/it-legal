@@ -54,7 +54,7 @@ export default function TestimonialsSection() {
   return (
     <section
       id="rekomendacje"
-      className="py-16 sm:py-20 bg-bg-medium/50"
+      className="py-12 sm:py-16 bg-bg-medium/50"
       aria-labelledby="testimonials-heading"
     >
       <div className="mx-auto max-w-7xl px-5 sm:px-8">

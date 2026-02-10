@@ -79,7 +79,7 @@ export default function SpecializationsSection() {
   return (
     <section
       id="specjalizacje"
-      className="py-16 sm:py-20 bg-bg-medium/50"
+      className="py-12 sm:py-16 bg-bg-medium/50"
       aria-labelledby="spec-heading"
     >
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
@@ -109,7 +109,6 @@ export default function SpecializationsSection() {
               <ScrollReveal key={i} delay={i * 80}>
                 <Link
                   href={`/specjalizacje/${spec.slug}`}
-                  target="_blank"
                   className="relative overflow-hidden rounded-xl border border-text-dark/[0.08] bg-gradient-to-b from-primary/[0.06] via-bg-light to-bg-light p-5 sm:p-7 flex flex-col h-[230px] group hover:border-primary/20 hover:shadow-lg transition-all duration-500 block"
                 >
                   {/* Watermark icon */}

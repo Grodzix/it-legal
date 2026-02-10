@@ -18,7 +18,7 @@ export default function AboutSection() {
   return (
     <section
       id="o-nas"
-      className="py-16 sm:py-20"
+      className="py-12 sm:py-16"
       aria-labelledby="about-heading"
     >
       <div className="mx-auto max-w-7xl px-5 sm:px-8">

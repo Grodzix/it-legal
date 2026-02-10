@@ -26,7 +26,7 @@ const pillars = [
 
 export default function MissionSection() {
   return (
-    <section className="py-16 sm:py-20" aria-labelledby="mission-heading">
+    <section className="py-12 sm:py-16" aria-labelledby="mission-heading">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         {/* ── Header: heading + text ── */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20 items-start">
