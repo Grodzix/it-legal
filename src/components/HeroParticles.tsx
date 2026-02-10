@@ -19,6 +19,7 @@ export default function HeroParticles() {
   const particlesRef = useRef<Particle[]>([]);
   const rafRef = useRef<number>(0);
   const visibleRef = useRef(true);
+  const sizeRef = useRef({ w: 0, h: 0 });
 
   const initParticles = useCallback((w: number, h: number) => {
     const count = Math.min(80, Math.floor((w * h) / 12000));
@@ -51,6 +52,7 @@ export default function HeroParticles() {
       canvas.width = rect.width * dpr;
       canvas.height = rect.height * dpr;
       ctx.scale(dpr, dpr);
+      sizeRef.current = { w: rect.width, h: rect.height };
       initParticles(rect.width, rect.height);
     };
 
@@ -64,9 +66,7 @@ export default function HeroParticles() {
     window.addEventListener("mousemove", onMouse, { passive: true });
 
     const animate = () => {
-      const rect = canvas.getBoundingClientRect();
-      const w = rect.width;
-      const h = rect.height;
+      const { w, h } = sizeRef.current;
       ctx.clearRect(0, 0, w, h);
 
       const mx = mouseRef.current.x;
@@ -161,6 +161,14 @@ export default function HeroParticles() {
     <canvas
       ref={canvasRef}
       className="absolute top-0 bottom-0 right-0 lg:left-[52%] xl:left-[56%] w-full lg:w-[48%] xl:w-[44%] h-full pointer-events-none"
+      style={{
+        maskImage:
+          "linear-gradient(to right, transparent, black 15%, black 85%, transparent), linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)",
+        WebkitMaskImage:
+          "linear-gradient(to right, transparent, black 15%, black 85%, transparent), linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)",
+        maskComposite: "intersect",
+        WebkitMaskComposite: "destination-in",
+      }}
       aria-hidden="true"
     />
   );

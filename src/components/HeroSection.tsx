@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { heroData } from "@/lib/data";
 import HeroParticles from "./HeroParticles";
 import HeroStats from "./HeroStats";
@@ -30,27 +29,28 @@ export default function HeroSection() {
         aria-hidden="true"
       />
 
-      {/* ===== LAWYER PHOTO (desktop) — absolute positioned right side ===== */}
+      {/* ===== LAWYER PHOTO (desktop) — absolute positioned right side, overlaps next section ===== */}
       <div
-        className="absolute right-0 bottom-0 top-0 w-[48%] xl:w-[44%] hidden lg:block pointer-events-none hero-word"
+        className="absolute right-0 bottom-0 top-0 w-[48%] xl:w-[44%] hidden lg:flex items-end justify-center pointer-events-none hero-word z-30"
         style={{ animationDelay: "300ms" }}
         aria-hidden="true"
       >
-        {/* Gradient fade from left for smooth blend */}
-        <div className="absolute inset-0 z-[2] bg-gradient-to-r from-bg-light to-transparent w-[20%]" />
-
         {/* Subtle glow behind */}
         <div className="absolute bottom-0 right-[10%] w-[70%] h-[60%] rounded-full bg-primary/[0.04] blur-3xl" />
 
-        <Image
-          src="/lawyer-transparent.png"
-          alt=""
-          width={840}
-          height={1050}
-          className="relative z-[1] h-full w-auto max-w-none object-contain object-bottom mr-[8%] ml-auto drop-shadow-2xl"
-          priority
-          sizes="(min-width: 1024px) 48vw, 0vw"
-        />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <picture>
+          <source srcSet="/portret.avif" type="image/avif" />
+          <img
+            src="/portret.jpg"
+            alt=""
+            width={1760}
+            height={1916}
+            fetchPriority="high"
+            decoding="async"
+            className="relative z-[1] w-[103%] max-w-none max-h-full object-contain object-bottom drop-shadow-2xl -translate-x-[12%]"
+          />
+        </picture>
       </div>
 
       {/* ===== FLOATING STAT BADGES (desktop) — on top of photo ===== */}
@@ -148,15 +148,19 @@ export default function HeroSection() {
                 className="absolute inset-0 rounded-full bg-primary/[0.06] blur-2xl scale-90"
                 aria-hidden="true"
               />
-              <Image
-                src="/lawyer-transparent.png"
-                alt="Paweł Sokołowski – Radca Prawny, IT Legal"
-                width={420}
-                height={525}
-                className="relative w-full h-auto drop-shadow-xl"
-                priority
-                sizes="(max-width: 640px) 208px, 256px"
-              />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <picture>
+                <source srcSet="/portret.avif" type="image/avif" />
+                <img
+                  src="/portret.jpg"
+                  alt="Paweł Sokołowski – Radca Prawny, IT Legal"
+                  width={880}
+                  height={958}
+                  loading="lazy"
+                  decoding="async"
+                  className="relative w-full h-auto drop-shadow-xl rounded-2xl"
+                />
+              </picture>
             </div>
           </div>
         </div>
