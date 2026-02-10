@@ -155,8 +155,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pl" className="scroll-smooth">
+    <html lang="pl" suppressHydrationWarning>
       <head>
+        {/* Skip reveal animations when landing on a hash anchor from a subpage */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `if(location.hash){document.documentElement.classList.add('hash-nav')}`,
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

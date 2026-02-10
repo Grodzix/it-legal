@@ -162,7 +162,7 @@ export default async function ArticlePage({ params }: Props) {
                 szczeg&oacute;&#322;y wsp&oacute;&#322;pracy. Pierwsza
                 konsultacja jest bezp&#322;atna.
               </p>
-              <a
+              <Link
                 href="/#kontakt"
                 className="inline-flex items-center gap-2.5 bg-primary text-white font-semibold px-8 py-3.5 rounded-xl hover:bg-primary-dark transition-colors shadow-lg shadow-primary/25 group"
               >
@@ -181,7 +181,7 @@ export default async function ArticlePage({ params }: Props) {
                 >
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
-              </a>
+              </Link>
             </div>
           </ScrollReveal>
         </div>

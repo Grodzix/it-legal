@@ -25,7 +25,6 @@
 }
 
 html {
-  scroll-behavior: smooth;
   overflow-y: scroll;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -133,6 +132,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ===== SCROLL REVEAL ===== */
+/* When navigating via hash anchor from a subpage, fast fade-in without movement */
+html.hash-nav .reveal,
+html.hash-nav .reveal-left,
+html.hash-nav .reveal-right {
+  transform: none !important;
+  transition: opacity 150ms ease-out !important;
+}
+
 .reveal {
   opacity: 0;
   transform: translateY(32px);

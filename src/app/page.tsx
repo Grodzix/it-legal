@@ -9,10 +9,12 @@ import KnowledgeBaseSection from "@/components/KnowledgeBaseSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import SplashScreen from "@/components/SplashScreen";
+import SmoothAnchorScroll from "@/components/SmoothAnchorScroll";
 
 export default function Home() {
   return (
     <>
+      <SmoothAnchorScroll />
       <SplashScreen />
       <Header />
       <main>

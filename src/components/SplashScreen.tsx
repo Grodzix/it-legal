@@ -12,6 +12,25 @@ export default function SplashScreen() {
     // Skip splash screen if navigating to a hash anchor (e.g. /#specjalizacje)
     if (window.location.hash) {
       setPhase("done");
+
+      // Wait one frame (so the browser paints opacity:0 first), then add
+      // "revealed" to trigger the fast 150ms fade-in for visible elements.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          document.querySelectorAll(".reveal, .reveal-left, .reveal-right").forEach((el) => {
+            const rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+              el.classList.add("revealed");
+            }
+          });
+
+          // Remove hash-nav after fade-in completes so elements outside
+          // the viewport get their normal reveal animation when scrolled to.
+          setTimeout(() => {
+            document.documentElement.classList.remove("hash-nav");
+          }, 200);
+        });
+      });
       return;
     }
 
