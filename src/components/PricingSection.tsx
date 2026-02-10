@@ -22,7 +22,7 @@ export default function PricingSection() {
           </p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-5">
           {pricingData.tiers.map((tier, i) => (
             <ScrollReveal key={i} delay={i * 120}>
               <div
@@ -52,7 +52,7 @@ export default function PricingSection() {
                     </span>
                     {tier.priceSuffix && (
                       <span
-                        className={`ml-2 text-sm ${
+                        className={`block text-sm mt-1 ${
                           tier.highlighted ? "text-white/70" : "text-text-light"
                         }`}
                       >

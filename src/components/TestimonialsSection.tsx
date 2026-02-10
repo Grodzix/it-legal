@@ -8,6 +8,10 @@ function rotateForward(arr: number[]) {
   return [...arr.slice(1), arr[0]];
 }
 
+function rotateBackward(arr: number[]) {
+  return [arr[arr.length - 1], ...arr.slice(0, -1)];
+}
+
 function cardDepthClass(position: number) {
   if (position === 0) return "opacity-100 scale-100 translate-y-0";
   if (position === 1) return "opacity-100 scale-[0.965] translate-y-3";
@@ -20,17 +24,27 @@ export default function TestimonialsSection() {
   const [animating, setAnimating] = useState(false);
   const [recycleCard, setRecycleCard] = useState<number | null>(null);
   const [recycleActive, setRecycleActive] = useState(false);
+  const [prevAnimating, setPrevAnimating] = useState(false);
+  const [risingCard, setRisingCard] = useState<number | null>(null);
+  const [risingActive, setRisingActive] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const total = testimonials.length;
+  const anyAnimating = animating || prevAnimating;
 
   // Swipe support
   const touchStartX = useRef(0);
   const touchStartY = useRef(0);
 
   const next = useCallback(() => {
-    if (animating) return;
+    if (anyAnimating) return;
     setAnimating(true);
-  }, [animating]);
+  }, [anyAnimating]);
+
+  const prev = useCallback(() => {
+    if (anyAnimating) return;
+    setRisingCard(stack[stack.length - 1]);
+    setPrevAnimating(true);
+  }, [anyAnimating, stack]);
 
   useEffect(() => {
     if (!animating) return;
@@ -54,6 +68,28 @@ export default function TestimonialsSection() {
     return () => clearTimeout(timer);
   }, [animating, total]);
 
+  useEffect(() => {
+    if (!prevAnimating || risingCard === null) return;
+
+    setRisingActive(false);
+    setStack((prev) => rotateBackward(prev));
+    setCurrentIndex((prev) => (prev - 1 + total) % total);
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setRisingActive(true);
+      });
+    });
+
+    const timer = setTimeout(() => {
+      setRisingCard(null);
+      setRisingActive(false);
+      setPrevAnimating(false);
+    }, 550);
+
+    return () => clearTimeout(timer);
+  }, [prevAnimating, risingCard, total]);
+
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
     touchStartY.current = e.touches[0].clientY;
@@ -63,12 +99,14 @@ export default function TestimonialsSection() {
     (e: React.TouchEvent) => {
       const deltaX = touchStartX.current - e.changedTouches[0].clientX;
       const deltaY = Math.abs(touchStartY.current - e.changedTouches[0].clientY);
-      // Swipe left to advance (min 50px horizontal, must be more horizontal than vertical)
-      if (deltaX > 50 && deltaX > deltaY) {
-        next();
+      const absDeltaX = Math.abs(deltaX);
+      // min 50px horizontal, must be more horizontal than vertical
+      if (absDeltaX > 50 && absDeltaX > deltaY) {
+        if (deltaX > 0) next();
+        else prev();
       }
     },
-    [next]
+    [next, prev]
   );
 
   const exitTopClass = "translate-x-[100%] rotate-6 opacity-100";
@@ -100,7 +138,7 @@ export default function TestimonialsSection() {
               onTouchEnd={handleTouchEnd}
             >
               {testimonials.map((testimonial, index) => {
-                if (recycleCard === index) return null;
+                if (recycleCard === index || risingCard === index) return null;
                 const position = stack.indexOf(index);
                 const isTopCard = position === 0;
                 const cardClass =
@@ -177,12 +215,97 @@ export default function TestimonialsSection() {
                   aria-hidden="true"
                 />
               )}
+
+              {risingCard !== null && (() => {
+                const t = testimonials[risingCard];
+                return (
+                  <article
+                    style={{ zIndex: total + 1 }}
+                    className={`absolute inset-0 rounded-2xl bg-white border border-slate-200/70 px-8 pt-6 pb-10 sm:px-12 sm:pt-8 sm:pb-14 shadow-[0_18px_35px_rgba(15,23,42,0.10)] pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col ${
+                      risingActive
+                        ? "translate-y-0 scale-100 opacity-100"
+                        : "translate-y-[60px] scale-[0.88] opacity-0"
+                    }`}
+                    aria-hidden="true"
+                  >
+                    <svg
+                      width="48"
+                      height="48"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      className="text-primary/20 mb-3 flex-shrink-0"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"
+                        fill="currentColor"
+                      />
+                      <path
+                        d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"
+                        fill="currentColor"
+                      />
+                    </svg>
+
+                    <blockquote className="min-h-0 flex-1 overflow-y-auto pr-1">
+                      <p className="text-lg sm:text-xl text-text-dark leading-relaxed italic">
+                        &ldquo;{t.quote}&rdquo;
+                      </p>
+                    </blockquote>
+
+                    <div className="mt-6 flex items-center gap-4">
+                      {t.logo ? (
+                        <img
+                          src={t.logo}
+                          alt={`Logo ${t.company}`}
+                          className="h-10 w-auto max-w-[120px] object-contain flex-shrink-0"
+                        />
+                      ) : (
+                        <div className="h-12 w-28 border-2 border-dashed border-slate-300 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <span className="text-[0.65rem] text-text-light whitespace-nowrap select-none">
+                            Logo firmy
+                          </span>
+                        </div>
+                      )}
+                      <div>
+                        <p className="font-semibold text-text-dark">
+                          {t.author}
+                        </p>
+                        <p className="text-sm text-text-medium">
+                          {t.role}, {t.company}
+                        </p>
+                      </div>
+                    </div>
+                  </article>
+                );
+              })()}
             </div>
+
+            {/* Desktop: arrow on the left side */}
+            <button
+              onClick={prev}
+              disabled={anyAnimating}
+              className="hidden lg:flex absolute -left-16 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full border-2 border-text-dark/15 items-center justify-center hover:border-primary hover:text-primary hover:bg-primary/5 transition-all cursor-pointer shadow-sm bg-white/80 backdrop-blur-sm disabled:opacity-40"
+              aria-label="Poprzednia rekomendacja"
+            >
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
 
             {/* Desktop: arrow on the right side */}
             <button
               onClick={next}
-              disabled={animating}
+              disabled={anyAnimating}
               className="hidden lg:flex absolute -right-16 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full border-2 border-text-dark/15 items-center justify-center hover:border-primary hover:text-primary hover:bg-primary/5 transition-all cursor-pointer shadow-sm bg-white/80 backdrop-blur-sm disabled:opacity-40"
               aria-label="Następna rekomendacja"
             >
@@ -202,15 +325,36 @@ export default function TestimonialsSection() {
             </button>
           </div>
 
-          {/* Mobile: button + counter below cards */}
-          <div className="flex items-center justify-center gap-4 mt-14 lg:hidden">
-            <span className="text-sm text-text-light tabular-nums">
+          {/* Mobile: buttons + counter below cards */}
+          <div className="flex items-center justify-center gap-3 mt-14 lg:hidden">
+            <button
+              onClick={prev}
+              disabled={anyAnimating}
+              className="inline-flex items-center gap-2 rounded-full border-2 border-text-dark/15 px-5 py-2.5 text-sm font-medium text-text-dark hover:border-primary hover:text-primary transition-all cursor-pointer disabled:opacity-40"
+              aria-label="Poprzednia rekomendacja"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+              Poprzednia
+            </button>
+            <span className="text-sm text-text-light tabular-nums min-w-[3.5rem] text-center">
               {currentIndex + 1} / {total}
             </span>
             <button
               onClick={next}
-              disabled={animating}
-              className="lg:hidden inline-flex items-center gap-2 rounded-full border-2 border-text-dark/15 px-5 py-2.5 text-sm font-medium text-text-dark hover:border-primary hover:text-primary transition-all cursor-pointer disabled:opacity-40"
+              disabled={anyAnimating}
+              className="inline-flex items-center gap-2 rounded-full border-2 border-text-dark/15 px-5 py-2.5 text-sm font-medium text-text-dark hover:border-primary hover:text-primary transition-all cursor-pointer disabled:opacity-40"
               aria-label="Następna rekomendacja"
             >
               Następna
