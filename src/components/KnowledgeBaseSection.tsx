@@ -5,7 +5,7 @@ export default function KnowledgeBaseSection() {
   return (
     <section
       id="baza-wiedzy"
-      className="py-24 sm:py-32 bg-bg-medium/50"
+      className="py-16 sm:py-20 bg-bg-medium/50"
       aria-labelledby="kb-heading"
     >
       <div className="mx-auto max-w-7xl px-5 sm:px-8">

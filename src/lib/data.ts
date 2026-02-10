@@ -45,6 +45,7 @@ export interface Specialization {
   highlight: string;
   description: string;
   icon: string;
+  slug: string;
 }
 
 export const specializations: Specialization[] = [
@@ -54,6 +55,7 @@ export const specializations: Specialization[] = [
     description:
       "Opracowywanie oraz negocjowanie wszelkich umów związanych z tworzeniem, rozwojem, obrotem, utrzymaniem oprogramowania, w tym umów wdrożeniowych, maintenance, rozwojowych.",
     icon: "contract",
+    slug: "umowy-it",
   },
   {
     title: "Własność Intelektualna (IP)",
@@ -61,6 +63,7 @@ export const specializations: Specialization[] = [
     description:
       "Audyty w zakresie stanu ochrony własności intelektualnej organizacji; przygotowywanie umów odnoszących się do obrotu prawami autorskimi oraz umów licencyjnych.",
     icon: "shield",
+    slug: "wlasnosc-intelektualna",
   },
   {
     title: "Cloud",
@@ -68,6 +71,7 @@ export const specializations: Specialization[] = [
     description:
       "Obsługa prawna procesów eksploatacji chmury obliczeniowej, w tym przygotowywanie kontraktów na korzystanie z zasobów chmurowych w modelach SaaS, IaaS, PaaS.",
     icon: "cloud",
+    slug: "cloud-computing",
   },
   {
     title: "Dane",
@@ -75,6 +79,7 @@ export const specializations: Specialization[] = [
     description:
       "Audyty zgodności z RODO; opracowywanie dokumentacji, procedur i procesów zapewniających zgodność z RODO; przygotowywanie umów związanych z przetwarzaniem danych osobowych.",
     icon: "lock",
+    slug: "dane-osobowe",
   },
   {
     title: "",
@@ -82,6 +87,7 @@ export const specializations: Specialization[] = [
     description:
       "Pomoc w adaptacji modeli biznesowych opartych na technologii blockchain do obowiązujących wymogów prawnych; wsparcie w zakresie obowiązków prawno-podatkowych.",
     icon: "cube",
+    slug: "blockchain",
   },
   {
     title: "AI",
@@ -89,6 +95,7 @@ export const specializations: Specialization[] = [
     description:
       "Doradztwo w zakresie zapewnienia zgodności systemów opartych o sztuczną inteligencję oraz Big Data z wymaganiami prawnymi, w tym regulacjami ochrony danych.",
     icon: "brain",
+    slug: "ai-big-data",
   },
   {
     title: "IP BOX",
@@ -96,6 +103,7 @@ export const specializations: Specialization[] = [
     description:
       "Wsparcie w procesie prawidłowej implementacji rozwiązań prawno-podatkowych adresowanych do sektora IT, pozwalających na optymalizację kosztów.",
     icon: "tax",
+    slug: "ip-box",
   },
   {
     title: "",
@@ -103,6 +111,7 @@ export const specializations: Specialization[] = [
     description:
       "Zagadnienia prawne mogące wyniknąć w toku działalności operacyjnej firm technologicznych.",
     icon: "dots",
+    slug: "inne",
   },
 ];
 

@@ -5,7 +5,7 @@ export default function PricingSection() {
   return (
     <section
       id="cennik"
-      className="py-24 sm:py-32"
+      className="py-16 sm:py-20"
       aria-labelledby="pricing-heading"
     >
       <div className="mx-auto max-w-7xl px-5 sm:px-8">

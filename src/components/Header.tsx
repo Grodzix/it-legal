@@ -23,7 +23,7 @@ export default function Header() {
     >
       <div className="mx-auto max-w-7xl px-5 sm:px-8 flex items-center">
         {/* Logo */}
-        <Logo />
+        <Logo id="header-logo" />
 
         {/* Mobile nav */}
         <div className="lg:hidden ml-auto">

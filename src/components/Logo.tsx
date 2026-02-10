@@ -1,10 +1,12 @@
 export default function Logo({
   className = "",
+  id,
 }: {
   className?: string;
+  id?: string;
 }) {
   return (
-    <a href="/" className={`flex items-center ${className}`} aria-label="IT Legal - Strona główna">
+    <a href="/" id={id} className={`flex items-center ${className}`} aria-label="IT Legal - Strona główna">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="144"
