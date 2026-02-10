@@ -1,0 +1,26 @@
+---
+description: Standardy dostępności WCAG 2.1 AA
+globs: "**/*.tsx"
+alwaysApply: false
+---
+
+# Dostępność (a11y) — WCAG 2.1 AA
+
+Wymagania przy tworzeniu/edycji komponentów:
+
+- Nawigacja klawiaturą: Enter, Escape muszą działać
+- Kontrast kolorów: ≥ 4.5:1 (tekst), ≥ 3:1 (duży tekst, UI)
+- Interaktywne elementy bez widocznego tekstu → `aria-label`
+- Formularze: każde pole z powiązanym `<label>` (lub `aria-label`)
+- Obrazki: `alt` opisowy (dekoracyjne → `alt=""` + `aria-hidden="true"`)
+- Animacje: respektuj `prefers-reduced-motion`
+
+```tsx
+// ❌ ŹLE
+<button onClick={toggle}><Icon /></button>
+
+// ✅ DOBRZE
+<button onClick={toggle} aria-label="Otwórz menu"><Icon aria-hidden="true" /></button>
+```
+
+- Skip navigation link na początku strony: `<a href="#main" class="sr-only focus:not-sr-only">Przejdź do treści</a>`

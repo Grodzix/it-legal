@@ -1,0 +1,14 @@
+---
+description: Przypomnienie o master checkliście pre-launch — odwołuj się do CHECKLIST.md
+alwaysApply: true
+---
+
+# Pre-Launch Checklist
+
+Projekt posiada plik `CHECKLIST.md` w katalogu głównym repozytorium.
+
+- Przy każdej istotnej zmianie sprawdź, czy nie narusza punktów z checklisty
+- Przy dodawaniu nowej strony/podstrony upewnij się, że ma: unikalne title, description, OG tags, canonical URL, JSON-LD
+- Przy deployu przypomnij o uruchomieniu finalnej sekcji checklisty (sekcja 13)
+- Nigdy nie commituj `noindex` ani `Disallow: /` do produkcji
+- Zawsze sprawdź `robots.txt` przed deployem na produkcję

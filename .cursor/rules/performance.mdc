@@ -1,0 +1,26 @@
+---
+description: Standardy wydajności — Core Web Vitals, obrazki, fonty
+globs: "**/*.tsx, **/*.ts"
+alwaysApply: false
+---
+
+# Performance — wymagania
+
+Cele: Lighthouse ≥ 95, LCP < 2.5s, INP < 200ms, CLS < 0.1
+
+Obrazki:
+- Zawsze `next/image` (nie `<img>`) — automatyczny lazy loading, srcset, optymalizacja
+- Format WebP/AVIF (Next.js konwertuje automatycznie)
+- Zawsze podawaj `width` i `height` (lub `fill` z `sizes`) — zapobiega CLS
+
+Fonty:
+- Self-hosting (nie Google Fonts CDN) — `next/font/local` lub `next/font/google`
+- `font-display: swap` (domyślne w `next/font`)
+- Preload tylko krytycznych fontów
+
+Komponenty:
+- Below-the-fold: `next/dynamic` z `ssr: false` gdzie możliwe
+- Ciężkie biblioteki: dynamic import
+- Preconnect do zewnętrznych domen: `<link rel="preconnect" href="...">`
+
+Nie dodawaj zależności bez sprawdzenia rozmiaru (`bundlephobia.com`).

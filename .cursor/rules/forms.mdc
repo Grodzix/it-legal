@@ -1,0 +1,25 @@
+---
+description: Standardy formularzy — walidacja, spam, RODO
+globs: "**/*.tsx, src/actions/**/*.ts"
+alwaysApply: false
+---
+
+# Formularze — wymagania
+
+Każdy formularz MUSI mieć:
+
+1. **Walidacja server-side** (Server Action / API route) — client-side NIE wystarczy
+2. **Walidacja client-side** z czytelnymi komunikatami po polsku
+3. **Ochrona antyspamowa**: Cloudflare Turnstile i/lub honeypot field
+4. **Rate limiting** na endpoint
+5. **Checkbox RODO** z klauzulą informacyjną (przy formularzach kontaktowych)
+6. **Feedback** po wysłaniu: sukces (toast/zmiana stanu) lub błąd z opisem
+
+Bezpieczeństwo:
+- Input sanitization na serwerze (trim, escape HTML)
+- Nie ufaj danym z klienta — waliduj schemat (Zod)
+
+```tsx
+// Honeypot field — ukryte pole, boty je wypełnią
+<input type="text" name="website" className="sr-only" tabIndex={-1} autoComplete="off" />
+```

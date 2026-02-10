@@ -1,0 +1,23 @@
+---
+description: Standardy SEO i meta tagów na stronach Next.js
+globs: src/app/**/page.tsx, src/app/**/layout.tsx
+alwaysApply: false
+---
+
+# SEO i Meta — wymagania
+
+Każda strona (`page.tsx`) MUSI eksportować `metadata` lub `generateMetadata`:
+
+- `title` — unikalne, 50–60 znaków
+- `description` — unikalne, 150–160 znaków
+- `openGraph` — title, description, images (1200×630), url, type
+- `twitter` — card: "summary_large_image", title, description, images
+- `alternates.canonical` — pełny URL strony
+
+Główny `layout.tsx` MUSI zawierać:
+- `metadataBase` ustawione na domenę produkcyjną
+
+Hierarchia nagłówków:
+- Jedno `<h1>` na stronę
+- Kolejność: h1 → h2 → h3, bez przeskoków
+- Każdy `<img>` musi mieć opisowy `alt` (nie pusty, chyba że dekoracyjny)

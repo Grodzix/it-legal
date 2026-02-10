@@ -1,0 +1,24 @@
+---
+description: Nagłówki bezpieczeństwa HTTP i konfiguracja Cloudflare
+globs: public/_headers, src/middleware.ts, next.config.ts, wrangler.jsonc
+alwaysApply: false
+---
+
+# Nagłówki bezpieczeństwa HTTP
+
+Wymagane nagłówki (w `public/_headers` lub middleware):
+
+```
+Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Referrer-Policy: strict-origin-when-cross-origin
+Permissions-Policy: camera=(), microphone=(), geolocation=()
+Content-Security-Policy: [dostosowane do strony]
+X-XSS-Protection: 0
+```
+
+Zasady:
+- HTTPS wymuszone — redirect HTTP → HTTPS (Cloudflare: Always Use HTTPS)
+- CSP musi być restrykcyjne — `default-src 'self'`, dodawać wyjątki tylko gdy konieczne
+- Brak wrażliwych danych (kluczy API, tokenów) w kodzie klienckim

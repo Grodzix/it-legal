@@ -1,0 +1,28 @@
+---
+description: Standardy jakości linków i elementów nawigacji
+globs: "**/*.tsx"
+alwaysApply: false
+---
+
+# Linki i nawigacja — wymagania
+
+Linki zewnętrzne:
+- `target="_blank"` z `rel="noopener"` (zapobiega tabnabbing)
+- Rozważ `rel="nofollow"` dla linków komercyjnych / user-generated
+
+```tsx
+// ❌ ŹLE
+<a href="https://example.com" target="_blank">Link</a>
+
+// ✅ DOBRZE
+<a href="https://example.com" target="_blank" rel="noopener">Link</a>
+```
+
+Linki wewnętrzne:
+- Używaj `next/link` (nie `<a>`) — prefetching, client-side navigation
+- Czyste URLe: kebab-case, bez query params gdy niepotrzebne
+
+Linki kontaktowe:
+- Telefon: `<a href="tel:+48123456789">` (z kodem kraju)
+- Email: `<a href="mailto:kontakt@domena.pl">`
+- Oba muszą działać na mobile

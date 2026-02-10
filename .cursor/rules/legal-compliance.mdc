@@ -1,0 +1,23 @@
+---
+description: Wymagania prawne — RODO, prawa autorskie, dane firmy
+alwaysApply: true
+---
+
+# Prawne i compliance
+
+Obowiązkowe elementy na każdej stronie klienta:
+
+- **Polityka prywatności** — RODO-compliant, link w stopce
+- **Cookie banner** — z możliwością odmowy (nie tylko "akceptuję")
+- **Dane firmy w stopce** — nazwa, NIP, adres siedziby (wymóg prawny PL)
+- **Copyright** w stopce z aktualnym rokiem (dynamiczny, nie hardcoded)
+
+Przy formularzach:
+- Klauzula informacyjna RODO (kto jest administratorem, cel, podstawa prawna, prawa)
+- Checkbox zgody — niepre-zaznaczony
+
+Prawa autorskie:
+- Nie używaj obrazków/fontów bez sprawdzenia licencji
+- Obrazki stockowe: zachowaj potwierdzenie zakupu/licencji
+- Fonty: sprawdź licencję (web use, self-hosting allowed?)
+- Biblioteki: sprawdź licencję (MIT/Apache OK, GPL = uwaga na viralność)
