@@ -7,7 +7,7 @@ export default function Error({
   reset: () => void;
 }) {
   return (
-    <main className="min-h-screen bg-bg-light flex items-center justify-center px-5">
+    <main id="main" className="min-h-screen bg-bg-light flex items-center justify-center px-5">
       <div className="text-center max-w-md">
         <p className="text-8xl font-bold text-primary/20 font-heading mb-4">
           500
