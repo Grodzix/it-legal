@@ -79,7 +79,7 @@ export default function SpecializationsSection() {
   return (
     <section
       id="specjalizacje"
-      className="py-12 sm:py-16 bg-bg-medium/50"
+      className="py-12 sm:py-16"
       aria-labelledby="spec-heading"
     >
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
