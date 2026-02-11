@@ -84,11 +84,11 @@ export default function ContactSection() {
           </p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:items-stretch">
           {/* Left: contact info */}
-          <ScrollReveal direction="left" className="lg:col-span-2">
-            <div className="flex flex-col gap-8">
-              <div className="glass rounded-2xl p-8 shadow-md">
+          <ScrollReveal direction="left" className="lg:col-span-2 h-full">
+            <div className="flex flex-col gap-8 h-full">
+              <div className="glass rounded-2xl p-8 shadow-md flex-1">
                 <h3 className="text-lg font-semibold text-text-dark mb-6">
                   Dane kontaktowe
                 </h3>
@@ -130,14 +130,15 @@ export default function ContactSection() {
                 </div>
               </div>
 
-              <div className="glass rounded-2xl p-8 shadow-md">
+              <div className="glass rounded-2xl p-8 shadow-md flex-1 flex flex-col">
                 <h3 className="text-lg font-semibold text-text-dark mb-3">
-                  Szybka odpowiedź
+                  Umów spotkanie online
                 </h3>
                 <p className="text-text-medium text-sm leading-relaxed mb-5">
-                  Odpowiadamy na zapytania w ciągu 24 godzin roboczych.
-                  Pierwsza konsultacja jest bezpłatna.
+                  Wybierz dogodny termin w kalendarzu i zarezerwuj bezpłatną
+                  rozmowę o współpracy.
                 </p>
+                <div className="mt-auto">
                 {/* TODO: Zastąp "it-legal/konsultacja" właściwym linkiem Cal.com klienta */}
                 <button
                   onClick={() => setCalOpen(true)}
@@ -159,8 +160,9 @@ export default function ContactSection() {
                     <line x1="8" y1="2" x2="8" y2="6" />
                     <line x1="3" y1="10" x2="21" y2="10" />
                   </svg>
-                  Umów spotkanie
+                  Wybierz termin w kalendarzu
                 </button>
+                </div>
               </div>
             </div>
           </ScrollReveal>

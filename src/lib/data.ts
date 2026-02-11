@@ -187,10 +187,10 @@ export const testimonials: Testimonial[] = [
 
 export interface PricingTier {
   name: string;
-  description: string;
+  description?: string;
   price?: string;
   priceSuffix?: string;
-  features: string[];
+  features?: string[];
   cta: string;
   highlighted?: boolean;
 }
@@ -203,14 +203,7 @@ export const pricingData = {
   tiers: [
     {
       name: "Rozmowa o współpracy",
-      description: "Poznajmy się i omówmy Twoje potrzeby prawne",
       price: "Bezpłatna",
-      features: [
-        "Wstępna analiza potrzeb",
-        "Omówienie zakresu współpracy",
-        "Propozycja modelu rozliczeń",
-        "Bez zobowiązań",
-      ],
       cta: "Umów rozmowę",
     },
     {
@@ -243,17 +236,7 @@ export const pricingData = {
     },
     {
       name: "Projekt lub abonament",
-      description:
-        "Obsługa konkretnego projektu, transakcji lub stała obsługa prawna Twojej firmy",
-      price: "Indywidualnie",
-      priceSuffix: "porozmawiajmy o szczegółach",
-      features: [
-        "Dedykowany prawnik",
-        "Przygotowanie / negocjacja umów",
-        "Wsparcie do zakończenia projektu",
-        "Ryczałt lub stawka godzinowa",
-        "Audyty i przeglądy prawne",
-      ],
+      priceSuffix: "Porozmawiajmy o szczegółach",
       cta: "Zapytaj o wycenę",
     },
   ] as PricingTier[],
