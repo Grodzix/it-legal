@@ -34,8 +34,7 @@ export default function Footer() {
       links: [
         {
           label: "Polityka prywatności",
-          href: "https://it-legal.pl/polityka-prywatnosci.pdf",
-          external: true,
+          href: "/polityka-prywatnosci.pdf",
         },
         {
           label: "Baza wiedzy",
@@ -106,9 +105,12 @@ export default function Footer() {
         {/* Bottom divider */}
         <div className="h-px bg-text-dark/10 mb-4" />
 
-        {/* Copyright */}
+        {/* Company info & Copyright */}
         <p className="text-xs text-text-medium">
-          {siteConfig.owner} &copy; {year}
+          {siteConfig.owner} &bull; NIP: {siteConfig.nip} &bull; REGON: {siteConfig.regon}
+        </p>
+        <p className="text-xs text-text-medium mt-1">
+          &copy; {year} {siteConfig.name}. Wszelkie prawa zastrzeżone.
         </p>
       </div>
     </footer>

@@ -21,9 +21,29 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const article = specArticles.find((a) => a.slug === slug);
   if (!article) return {};
 
+  const title = `${article.title} – IT Legal`;
+  const description = article.intro.slice(0, 160);
+  const url = `/specjalizacje/${slug}`;
+
   return {
-    title: `${article.title} – IT Legal`,
-    description: article.intro.slice(0, 160),
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: "IT Legal",
+      locale: "pl_PL",
+      type: "article",
+      images: [{ url: "/og-image.png", width: 1200, height: 630, alt: title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/og-image.png"],
+    },
   };
 }
 
@@ -35,8 +55,53 @@ export default async function SpecializationPage({ params }: Props) {
   const spec = specializations.find((s) => s.slug === slug);
   const isIpBox = slug === "ip-box";
 
+  const specName = spec
+    ? [spec.title, spec.highlight].filter(Boolean).join(" ")
+    : article.title;
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Service",
+        name: specName,
+        description: article.intro,
+        provider: { "@id": "https://it-legal.pl/#organization" },
+        areaServed: { "@type": "Country", name: "Polska" },
+        url: `https://it-legal.pl/specjalizacje/${slug}`,
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Strona główna",
+            item: "https://it-legal.pl",
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Specjalizacje",
+            item: "https://it-legal.pl/#specjalizacje",
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: specName,
+            item: `https://it-legal.pl/specjalizacje/${slug}`,
+          },
+        ],
+      },
+    ],
+  };
+
   return (
-    <main className="min-h-screen bg-bg-light">
+    <main id="main" className="min-h-screen bg-bg-light">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Hero */}
       <section className="relative pt-32 pb-16 sm:pt-40 sm:pb-20 bg-gradient-to-b from-primary/[0.06] via-bg-light to-bg-light overflow-hidden">
         <div

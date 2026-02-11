@@ -45,6 +45,10 @@ export default function HeroParticles() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    // Respect reduced motion preference
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
     const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 

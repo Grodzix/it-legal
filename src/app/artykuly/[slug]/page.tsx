@@ -18,9 +18,29 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = knowledgeBaseData.posts.find((p) => p.slug === slug);
   if (!post) return {};
 
+  const title = `${post.title} – IT Legal`;
+  const description = post.excerpt.slice(0, 160);
+  const url = `/artykuly/${slug}`;
+
   return {
-    title: `${post.title} – IT Legal`,
-    description: post.excerpt.slice(0, 160),
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: "IT Legal",
+      locale: "pl_PL",
+      type: "article",
+      images: [{ url: "/og-image.png", width: 1200, height: 630, alt: title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/og-image.png"],
+    },
   };
 }
 
@@ -30,8 +50,54 @@ export default async function ArticlePage({ params }: Props) {
   const content = articleContents[slug];
   if (!post || !content) notFound();
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        headline: post.title,
+        description: post.excerpt,
+        datePublished: post.date,
+        author: {
+          "@type": "Person",
+          name: "Paweł Sokołowski",
+          "@id": "https://it-legal.pl/#person",
+        },
+        publisher: { "@id": "https://it-legal.pl/#organization" },
+        mainEntityOfPage: `https://it-legal.pl/artykuly/${slug}`,
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Strona główna",
+            item: "https://it-legal.pl",
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Baza wiedzy",
+            item: "https://it-legal.pl/#baza-wiedzy",
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: post.title,
+            item: `https://it-legal.pl/artykuly/${slug}`,
+          },
+        ],
+      },
+    ],
+  };
+
   return (
-    <main className="min-h-screen bg-bg-light">
+    <main id="main" className="min-h-screen bg-bg-light">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Hero */}
       <section className="relative pt-32 pb-16 sm:pt-40 sm:pb-20 bg-gradient-to-b from-primary/[0.06] via-bg-light to-bg-light overflow-hidden">
         <div

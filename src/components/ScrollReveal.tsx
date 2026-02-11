@@ -21,6 +21,13 @@ export default function ScrollReveal({
     const el = ref.current;
     if (!el) return;
 
+    // Immediately reveal if user prefers reduced motion
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) {
+      el.classList.add("revealed");
+      return;
+    }
+
     const reveal = () => {
       if (el.classList.contains("revealed")) return;
       if (delay > 0) {

@@ -5,7 +5,9 @@ export const siteConfig = {
   email: "biuro@it-legal.pl",
   phone: "+48 537 981 165",
   phoneDisplay: "537 981 165",
-  address: "Warszawa",
+  address: "ul. Kartograficzna 80B/6, Warszawa",
+  nip: "6391934341",
+  regon: "362806375",
   owner: "IT Legal Paweł Sokołowski",
 } as const;
 

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+  <path d="M24 46C36.1503 46 46 36.1503 46 24C46 11.8497 36.1503 2 24 2C11.8497 2 2 11.8497 2 24C2 36.1503 11.8497 46 24 46Z" stroke="#1E293B" stroke-opacity="0.5" stroke-width="1.25" stroke-miterlimit="10"></path>
+  <path d="M18.3259 13.5579C15.2101 18.1347 19.818 21.1615 24.0001 21.1615C28.1821 21.1615 31.5724 24.5517 31.5724 28.7338C31.5724 32.9159 28.1821 36.3061 24.0001 36.3061C19.818 36.3061 16.4277 32.9159 16.4277 28.7338" stroke="#1E293B" stroke-width="1.5" stroke-miterlimit="10"></path>
+  <path d="M29.6742 33.7483C32.79 29.1714 28.1821 26.1446 24.0001 26.1446C19.818 26.1446 16.4277 22.7544 16.4277 18.5723C16.4277 14.3902 19.818 11 24.0001 11C28.1821 11 31.5724 14.3902 31.5724 18.5723" stroke="#1E293B" stroke-width="1.5" stroke-miterlimit="10"></path>
+</svg></svg><style>@media (prefers-color-scheme: light) { :root { filter: none; } }
+@media (prefers-color-scheme: dark) { :root { filter: invert(100%); } }
+</style></svg>
