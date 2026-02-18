@@ -52,15 +52,17 @@ export default function SplashScreen() {
       setPhase("animating");
     }, 300);
 
-    // Cross-fade: reveal header logo as splash logo fades out
+    // Fade in the real header logo underneath the splash logo (invisible to user
+    // because splash logo sits on top at z-101). By the time splash is removed
+    // from DOM, header logo is fully opaque and takes over seamlessly.
     const t2 = setTimeout(() => {
       if (headerLogo) {
-        headerLogo.style.transition = "opacity 200ms ease-out";
+        headerLogo.style.transition = "opacity 250ms ease-out";
         headerLogo.style.opacity = "1";
       }
-    }, 720);
+    }, 700);
 
-    // Remove splash after cross-fade + backdrop fade complete
+    // Remove splash after backdrop fade completes
     const t3 = setTimeout(() => {
       setPhase("done");
       document.body.style.overflow = "";
@@ -68,7 +70,7 @@ export default function SplashScreen() {
         headerLogo.style.transition = "";
         headerLogo.style.opacity = "";
       }
-    }, 1300);
+    }, 1400);
 
     return () => {
       cancelAnimationFrame(raf);
@@ -90,28 +92,30 @@ export default function SplashScreen() {
 
   return (
     <>
-      {/* White backdrop — stays solid until cross-fade is done, then fades */}
+      {/* White backdrop — fades out to reveal page after logo lands */}
       <div
         className="fixed inset-0 z-[100] bg-white"
         style={{
           opacity: isAnimating ? 0 : 1,
-          transition: isAnimating ? "opacity 300ms ease-out 650ms" : "none",
+          transition: isAnimating ? "opacity 350ms ease-out 700ms" : "none",
           pointerEvents: isAnimating ? "none" : "auto",
         }}
       />
 
-      {/* Animated logo — flies to header then cross-fades */}
+      {/* Splash logo — flies to header position and STAYS there (never fades out).
+          It sits above the backdrop at z-101 so it's always visible.
+          When the component unmounts, the real header logo takes over. */}
       <div
         className="fixed top-1/2 left-1/2 z-[101] pointer-events-none"
         style={{
           transform: isAnimating
             ? `translate(calc(-50% + ${target.offsetX}px), calc(-50% + ${target.offsetY}px)) scale(${target.scale})`
             : "translate(-50%, -50%)",
-          opacity: phase === "idle" || isAnimating ? 0 : 1,
+          opacity: phase === "idle" ? 0 : 1,
           willChange: "transform, opacity",
           transition: isAnimating
-            ? "transform 420ms cubic-bezier(0.4, 0, 0.2, 1), opacity 200ms ease-out 420ms"
-            : "transform 420ms cubic-bezier(0.4, 0, 0.2, 1), opacity 200ms ease-out",
+            ? "transform 420ms cubic-bezier(0.4, 0, 0.2, 1)"
+            : "opacity 200ms ease-out",
         }}
       >
         <svg
