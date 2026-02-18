@@ -18,13 +18,6 @@ export default function HeroSection() {
       </div>
 
 
-      {/* Decorative elements — desktop only */}
-      <div
-        className="absolute bottom-[35%] left-[7%] w-2.5 h-2.5 rounded-full bg-primary/15 hidden xl:block"
-        style={{ animation: "pulse 4s ease-in-out infinite" }}
-        aria-hidden="true"
-      />
-
       {/* ===== MOBILE HERO ===== */}
       <div className="lg:hidden relative z-10 flex-1 flex flex-col items-center pt-24 sm:pt-28">
         <div className="flex flex-col items-center px-6 sm:px-10">
