@@ -9,12 +9,9 @@ export default function SplashScreen() {
   const targetRef = useRef({ offsetX: 0, offsetY: 0, scale: 1 });
 
   useEffect(() => {
-    // Skip splash screen if navigating to a hash anchor (e.g. /#specjalizacje)
     if (window.location.hash) {
       setPhase("done");
 
-      // Wait one frame (so the browser paints opacity:0 first), then add
-      // "revealed" to trigger the fast 150ms fade-in for visible elements.
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           document.querySelectorAll(".reveal, .reveal-left, .reveal-right").forEach((el) => {
@@ -24,8 +21,6 @@ export default function SplashScreen() {
             }
           });
 
-          // Remove hash-nav after fade-in completes so elements outside
-          // the viewport get their normal reveal animation when scrolled to.
           setTimeout(() => {
             document.documentElement.classList.remove("hash-nav");
           }, 200);
@@ -40,15 +35,14 @@ export default function SplashScreen() {
     const headerLogo = document.getElementById("header-logo");
     if (headerLogo) headerLogo.style.opacity = "0";
 
-    // Phase 1: fade in the centered logo
     const raf = requestAnimationFrame(() => setPhase("visible"));
 
-    // Phase 2: measure header logo position, then animate
     const t1 = setTimeout(() => {
       if (headerLogo) {
-        const rect = headerLogo.getBoundingClientRect();
-        const cx = window.innerWidth / 2;
-        const cy = window.innerHeight / 2;
+        const targetEl = headerLogo.querySelector("svg") || headerLogo;
+        const rect = targetEl.getBoundingClientRect();
+        const cx = document.documentElement.clientWidth / 2;
+        const cy = document.documentElement.clientHeight / 2;
         targetRef.current = {
           offsetX: rect.left + rect.width / 2 - cx,
           offsetY: rect.top + rect.height / 2 - cy,
@@ -58,15 +52,15 @@ export default function SplashScreen() {
       setPhase("animating");
     }, 300);
 
-    // Reveal real header logo before splash unmounts
+    // Cross-fade: reveal header logo as splash logo fades out
     const t2 = setTimeout(() => {
       if (headerLogo) {
-        headerLogo.style.transition = "opacity 80ms ease-out";
+        headerLogo.style.transition = "opacity 200ms ease-out";
         headerLogo.style.opacity = "1";
       }
-    }, 1100);
+    }, 720);
 
-    // Phase 3: remove splash
+    // Remove splash after cross-fade + backdrop fade complete
     const t3 = setTimeout(() => {
       setPhase("done");
       document.body.style.overflow = "";
@@ -74,7 +68,7 @@ export default function SplashScreen() {
         headerLogo.style.transition = "";
         headerLogo.style.opacity = "";
       }
-    }, 1250);
+    }, 1300);
 
     return () => {
       cancelAnimationFrame(raf);
@@ -96,27 +90,28 @@ export default function SplashScreen() {
 
   return (
     <>
-      {/* White backdrop */}
+      {/* White backdrop — stays solid until cross-fade is done, then fades */}
       <div
         className="fixed inset-0 z-[100] bg-white"
         style={{
           opacity: isAnimating ? 0 : 1,
-          transition: isAnimating ? "opacity 500ms ease-out 400ms" : "none",
+          transition: isAnimating ? "opacity 300ms ease-out 650ms" : "none",
           pointerEvents: isAnimating ? "none" : "auto",
         }}
       />
 
-      {/* Animated logo — only transform + opacity for GPU compositing */}
+      {/* Animated logo — flies to header then cross-fades */}
       <div
         className="fixed top-1/2 left-1/2 z-[101] pointer-events-none"
         style={{
           transform: isAnimating
             ? `translate(calc(-50% + ${target.offsetX}px), calc(-50% + ${target.offsetY}px)) scale(${target.scale})`
             : "translate(-50%, -50%)",
-          opacity: phase === "idle" ? 0 : 1,
+          opacity: phase === "idle" || isAnimating ? 0 : 1,
           willChange: "transform, opacity",
-          transition:
-            "transform 420ms cubic-bezier(0.4, 0, 0.2, 1), opacity 200ms ease-out",
+          transition: isAnimating
+            ? "transform 420ms cubic-bezier(0.4, 0, 0.2, 1), opacity 200ms ease-out 420ms"
+            : "transform 420ms cubic-bezier(0.4, 0, 0.2, 1), opacity 200ms ease-out",
         }}
       >
         <svg

@@ -17,8 +17,6 @@ export default function HeroSection() {
         <HeroParticles />
       </div>
 
-      {/* Subtle grid pattern overlay */}
-      <div className="absolute inset-0 hero-grid-pattern pointer-events-none" />
 
       {/* Decorative elements — desktop only */}
       <div

@@ -223,14 +223,6 @@ html.hash-nav .reveal-right {
   background: linear-gradient(135deg, #F5F7FA 0%, #E8ECF0 40%, #D5DCE3 100%);
 }
 
-/* ===== HERO GRID PATTERN ===== */
-.hero-grid-pattern {
-  background-image:
-    linear-gradient(to right, rgba(73, 133, 201, 0.025) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(73, 133, 201, 0.025) 1px, transparent 1px);
-  background-size: 64px 64px;
-}
-
 /* ===== HERO TEXT REVEAL ===== */
 .hero-word {
   opacity: 0;
