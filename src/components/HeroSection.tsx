@@ -20,10 +20,6 @@ export default function HeroSection() {
 
       {/* Decorative elements — desktop only */}
       <div
-        className="absolute top-[22%] left-10 w-px h-40 bg-gradient-to-b from-transparent via-primary/20 to-transparent hidden xl:block"
-        aria-hidden="true"
-      />
-      <div
         className="absolute bottom-[35%] left-[7%] w-2.5 h-2.5 rounded-full bg-primary/15 hidden xl:block"
         style={{ animation: "pulse 4s ease-in-out infinite" }}
         aria-hidden="true"
