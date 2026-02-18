@@ -8,7 +8,7 @@ export default function Marquee() {
   // Render items twice for seamless infinite loop
   return (
     <div
-      className="bg-bg-dark/95 backdrop-blur-sm py-4 sm:py-5 overflow-hidden border-y border-white/[0.06]"
+      className="bg-bg-dark/95 backdrop-blur-sm py-4 sm:py-5 overflow-hidden border-y border-white/[0.06] -mt-2 lg:mt-0"
       aria-hidden="true"
     >
       <div className="marquee-track flex">

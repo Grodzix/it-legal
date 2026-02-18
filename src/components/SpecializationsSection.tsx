@@ -156,8 +156,8 @@ export default function SpecializationsSection() {
             );
           })}
 
-          {/* CTA Card */}
-          <ScrollReveal delay={8 * 80} className="sm:col-span-2 lg:col-span-1">
+          {/* CTA Card — hidden on mobile */}
+          <ScrollReveal delay={8 * 80} className="hidden sm:block sm:col-span-2 lg:col-span-1">
             <div className="relative overflow-hidden rounded-xl border border-primary/15 bg-gradient-to-b from-primary/[0.08] via-primary/[0.03] to-bg-light p-5 sm:p-7 flex flex-col items-center justify-center text-center min-h-[200px] sm:h-[230px]">
               <span
                 className="text-4xl sm:text-5xl font-heading stat-gradient-text opacity-15 leading-none select-none mb-5"

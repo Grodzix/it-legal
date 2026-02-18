@@ -250,6 +250,24 @@ html.hash-nav .reveal-right {
   }
 }
 
+/* ===== HERO TEXT REVEAL — MOBILE (no blur, less movement, faster) ===== */
+@media (max-width: 1023px) {
+  .hero-word {
+    animation: heroTextRevealMobile 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+}
+
+@keyframes heroTextRevealMobile {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* ===== SCROLL BOUNCE (hero indicator) ===== */
 .scroll-bounce {
   animation: scrollBounce 2s ease-in-out infinite;
