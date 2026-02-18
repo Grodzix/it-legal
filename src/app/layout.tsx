@@ -163,7 +163,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon-96x96.png" type="image/png" sizes="96x96" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
-        <meta name="theme-color" content="#4985C9" />
+        <meta name="theme-color" content="#F5F7FA" />
         {/* Skip reveal animations when landing on a hash anchor from a subpage */}
         <script
           dangerouslySetInnerHTML={{

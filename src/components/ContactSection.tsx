@@ -308,7 +308,7 @@ export default function ContactSection() {
                         name="rodo"
                         value="1"
                         required
-                        className="mt-1 w-4 h-4 rounded border-bg-medium text-primary focus:ring-primary"
+                        className="mt-0.5 w-5 h-5 sm:w-4 sm:h-4 rounded border-bg-medium text-primary focus:ring-primary flex-shrink-0"
                       />
                       <span className="text-xs text-text-medium leading-relaxed">
                         {contactData.rodoText}

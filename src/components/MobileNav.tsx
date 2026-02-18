@@ -54,7 +54,7 @@ export default function MobileNav() {
 
       {/* Panel */}
       <nav
-        className={`fixed top-0 right-0 z-40 h-full w-72 bg-bg-light shadow-2xl transform transition-transform duration-300 ${
+        className={`fixed top-0 right-0 z-40 h-full w-72 bg-[#F5F7FA] shadow-2xl transform transition-transform duration-300 ${
           open ? "translate-x-0" : "translate-x-full"
         }`}
         aria-label="Menu mobilne"

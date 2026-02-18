@@ -6,7 +6,7 @@ export default function SplashScreen() {
   const [phase, setPhase] = useState<"idle" | "visible" | "animating" | "done">(
     "idle"
   );
-  const targetRef = useRef({ x: "50%", y: "50%", scale: 1 });
+  const targetRef = useRef({ offsetX: 0, offsetY: 0, scale: 1 });
 
   useEffect(() => {
     // Skip splash screen if navigating to a hash anchor (e.g. /#specjalizacje)
@@ -47,9 +47,11 @@ export default function SplashScreen() {
     const t1 = setTimeout(() => {
       if (headerLogo) {
         const rect = headerLogo.getBoundingClientRect();
+        const cx = window.innerWidth / 2;
+        const cy = window.innerHeight / 2;
         targetRef.current = {
-          x: rect.left + rect.width / 2 + "px",
-          y: rect.top + rect.height / 2 + "px",
+          offsetX: rect.left + rect.width / 2 - cx,
+          offsetY: rect.top + rect.height / 2 - cy,
           scale: rect.height / 120,
         };
       }
@@ -104,16 +106,17 @@ export default function SplashScreen() {
         }}
       />
 
-      {/* Animated logo */}
+      {/* Animated logo — only transform + opacity for GPU compositing */}
       <div
-        className="fixed z-[101] pointer-events-none"
+        className="fixed top-1/2 left-1/2 z-[101] pointer-events-none"
         style={{
-          top: isAnimating ? target.y : "50%",
-          left: isAnimating ? target.x : "50%",
-          transform: `translate(-50%, -50%)${isAnimating ? ` scale(${target.scale})` : ""}`,
+          transform: isAnimating
+            ? `translate(calc(-50% + ${target.offsetX}px), calc(-50% + ${target.offsetY}px)) scale(${target.scale})`
+            : "translate(-50%, -50%)",
           opacity: phase === "idle" ? 0 : 1,
+          willChange: "transform, opacity",
           transition:
-            "top 420ms cubic-bezier(0.4, 0, 0.2, 1), left 420ms cubic-bezier(0.4, 0, 0.2, 1), transform 420ms cubic-bezier(0.4, 0, 0.2, 1), opacity 200ms ease-out",
+            "transform 420ms cubic-bezier(0.4, 0, 0.2, 1), opacity 200ms ease-out",
         }}
       >
         <svg
