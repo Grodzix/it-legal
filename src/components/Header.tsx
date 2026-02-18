@@ -26,7 +26,7 @@ export default function Header() {
         <Logo id="header-logo" />
 
         {/* Mobile nav */}
-        <div className="lg:hidden ml-auto">
+        <div className="ml-auto lg:hidden">
           <MobileNav />
         </div>
       </div>
