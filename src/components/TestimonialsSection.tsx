@@ -235,9 +235,6 @@ export default function TestimonialsSection() {
                 const position = stack.indexOf(index);
                 const isTopCard = position === 0;
 
-                // Desktop: skip the rising card in regular render (it's rendered separately below)
-                if (!isMobile && risingCard === index) return null;
-
                 const dragStyle: React.CSSProperties =
                   isTopCard && isDragging && isMobile && dragOffsetX !== 0
                     ? {
