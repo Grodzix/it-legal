@@ -109,29 +109,37 @@ export default function PricingSection() {
                   <div className="flex-1" />
                 )}
 
-                <a
-                  href="#kontakt"
-                  className={`mt-8 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all ${
-                    tier.highlighted
-                      ? "bg-white text-primary hover:bg-white/90"
-                      : "bg-primary text-white hover:bg-primary-dark"
-                  }`}
-                >
-                  {tier.cta}
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
+                {tier.calLink ? (
+                  <button
+                    data-cal-link={tier.calLink}
+                    data-cal-namespace={tier.calNamespace}
+                    data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}'
+                    className={`mt-8 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all cursor-pointer ${
+                      tier.highlighted
+                        ? "bg-white text-primary hover:bg-white/90"
+                        : "bg-primary text-white hover:bg-primary-dark"
+                    }`}
                   >
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </a>
+                    {tier.cta}
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                ) : (
+                  <a
+                    href="#formularz"
+                    className={`mt-8 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all ${
+                      tier.highlighted
+                        ? "bg-white text-primary hover:bg-white/90"
+                        : "bg-primary text-white hover:bg-primary-dark"
+                    }`}
+                  >
+                    {tier.cta}
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                  </a>
+                )}
               </div>
             </ScrollReveal>
           ))}

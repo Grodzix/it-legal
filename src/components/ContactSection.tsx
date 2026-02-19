@@ -24,34 +24,59 @@ export default function ContactSection() {
     initialState
   );
   const [messageLen, setMessageLen] = useState(0);
-  const [calOpen, setCalOpen] = useState(false);
 
-  // Load Cal.com embed script lazily
   useEffect(() => {
-    if (!calOpen) return;
-    // TODO: Zastąp "it-legal/konsultacja" właściwym linkiem Cal.com klienta
-    const script = document.createElement("script");
-    script.src = "https://app.cal.com/embed/embed.js";
-    script.async = true;
-    script.onload = () => {
-      // @ts-expect-error Cal global from embed script
-      if (window.Cal) {
-        // @ts-expect-error Cal global from embed script
-        window.Cal("ui", {
-          theme: "light",
-          styles: { branding: { brandColor: "#4985C9" } },
-        });
-        // @ts-expect-error Cal global from embed script
-        window.Cal("modal", {
-          calLink: "it-legal/konsultacja",
-        });
-      }
+    const w = window as any;
+    if (w.Cal) return;
+
+    (function (C: any, A: string, L: string) {
+      const p = function (a: any, ar: any) { a.q.push(ar); };
+      const d = C.document;
+      C.Cal = C.Cal || function (...args: any[]) {
+        const cal = C.Cal;
+        const ar = args;
+        if (!cal.loaded) {
+          cal.ns = {};
+          cal.q = cal.q || [];
+          d.head.appendChild(d.createElement("script")).src = A;
+          cal.loaded = true;
+        }
+        if (ar[0] === L) {
+          const api: any = function (...a: any[]) { p(api, a); };
+          const namespace = ar[1];
+          api.q = api.q || [];
+          if (typeof namespace === "string") {
+            cal.ns[namespace] = cal.ns[namespace] || api;
+            p(cal.ns[namespace], ar);
+            p(cal, ["initNamespace", namespace]);
+          } else p(cal, ar);
+          return;
+        }
+        p(cal, ar);
+      };
+    })(window, `${siteConfig.calOrigin}/embed/embed.js`, "init");
+
+    const calUi = {
+      theme: "light",
+      cssVarsPerTheme: { light: { "cal-brand": "#4985C9" } },
+      hideEventTypeDetails: false,
+      layout: "month_view",
     };
-    document.head.appendChild(script);
-    return () => {
-      script.remove();
-    };
-  }, [calOpen]);
+
+    w.Cal("init", siteConfig.calNamespace, { origin: siteConfig.calOrigin });
+    w.Cal.ns[siteConfig.calNamespace]("inline", {
+      elementOrSelector: "#cal-inline-embed",
+      config: { layout: "month_view", useSlotsViewOnSmallScreen: "true", theme: "light" },
+      calLink: siteConfig.calLink,
+    });
+    w.Cal.ns[siteConfig.calNamespace]("ui", calUi);
+
+    w.Cal("init", "konsultacja-express", { origin: siteConfig.calOrigin });
+    w.Cal.ns["konsultacja-express"]("ui", calUi);
+
+    w.Cal("init", "standard", { origin: siteConfig.calOrigin });
+    w.Cal.ns["standard"]("ui", calUi);
+  }, []);
 
   const handlePhoneInput = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
@@ -71,7 +96,7 @@ export default function ContactSection() {
       aria-labelledby="contact-heading"
     >
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <ScrollReveal className="text-center mb-16">
+        <ScrollReveal className="text-center mb-10">
           <p className="section-label mb-4">{contactData.sectionLabel}</p>
           <h2
             id="contact-heading"
@@ -82,6 +107,20 @@ export default function ContactSection() {
           <p className="mt-4 text-text-medium text-lg max-w-2xl mx-auto">
             {contactData.subheading}
           </p>
+        </ScrollReveal>
+
+        <ScrollReveal className="mb-6">
+          <div
+            id="cal-inline-embed"
+            style={{ width: "100%", overflow: "auto" }}
+          />
+        </ScrollReveal>
+
+        <div id="formularz" className="scroll-mt-32" />
+        <ScrollReveal className="text-center mb-10">
+          <h3 className="text-xl font-semibold text-text-dark">
+            Lub napisz do nas
+          </h3>
         </ScrollReveal>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:items-stretch">
@@ -127,43 +166,30 @@ export default function ContactSection() {
                     </span>
                     <span>{siteConfig.address}</span>
                   </div>
+
+                </div>
+
+                <div className="mt-8 pt-6 border-t border-bg-medium">
+                  <div className="flex items-start gap-4">
+                    <span className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10 text-primary flex-shrink-0 mt-0.5">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                      </svg>
+                    </span>
+                    <div className="text-sm text-text-medium space-y-1">
+                      <p className="font-medium text-text-dark mb-2">Godziny dostępności</p>
+                      <p>Poniedziałek: 12:00 – 19:30</p>
+                      <p>Wtorek: 15:00 – 19:30</p>
+                      <p>Środa: 12:00 – 19:30</p>
+                      <p>Czwartek: 12:00 – 19:30</p>
+                      <p>Piątek: 13:00 – 19:30</p>
+                      <p className="text-text-light">Sob – Ndz: niedostępne</p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div className="glass rounded-2xl p-8 shadow-md flex-1 flex flex-col">
-                <h3 className="text-lg font-semibold text-text-dark mb-3">
-                  Umów spotkanie online
-                </h3>
-                <p className="text-text-medium text-sm leading-relaxed mb-5">
-                  Wybierz dogodny termin w kalendarzu i zarezerwuj bezpłatną
-                  rozmowę o współpracy.
-                </p>
-                <div className="mt-auto">
-                {/* TODO: Zastąp "it-legal/konsultacja" właściwym linkiem Cal.com klienta */}
-                <button
-                  onClick={() => setCalOpen(true)}
-                  className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-primary-dark transition-colors shadow-md cursor-pointer"
-                >
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
-                  >
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                    <line x1="16" y1="2" x2="16" y2="6" />
-                    <line x1="8" y1="2" x2="8" y2="6" />
-                    <line x1="3" y1="10" x2="21" y2="10" />
-                  </svg>
-                  Wybierz termin w kalendarzu
-                </button>
-                </div>
-              </div>
             </div>
           </ScrollReveal>
 
@@ -346,6 +372,7 @@ export default function ContactSection() {
             </div>
           </ScrollReveal>
         </div>
+
       </div>
     </section>
   );

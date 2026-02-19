@@ -9,6 +9,9 @@ export const siteConfig = {
   nip: "6391934341",
   regon: "362806375",
   owner: "IT Legal Paweł Sokołowski",
+  calLink: "demo-it-legal/bezpłatna-konsultacja",
+  calNamespace: "bezpłatna-konsultacja",
+  calOrigin: "https://app.cal.eu",
 } as const;
 
 export const navLinks = [
@@ -193,6 +196,8 @@ export interface PricingTier {
   features?: string[];
   cta: string;
   highlighted?: boolean;
+  calLink?: string;
+  calNamespace?: string;
 }
 
 export const pricingData = {
@@ -203,21 +208,26 @@ export const pricingData = {
   tiers: [
     {
       name: "Rozmowa o współpracy",
+      description: "[treść do uzupełnienia przez klienta]",
       price: "Bezpłatna",
       cta: "Umów rozmowę",
+      calLink: "demo-it-legal/bezpłatna-konsultacja",
+      calNamespace: "bezpłatna-konsultacja",
     },
     {
       name: "Standard express",
       description:
-        "Szybka i rzetelna porada prawna w krótkim czasie. Konkretna odpowiedź radcy prawnego na Twoje pytania przez telefon.",
+        "Idealna opcja dla osób, które potrzebują szybkiej i rzetelnej porady prawnej w krótkim czasie. Uzyskasz tu konkretną odpowiedź radcy prawnego na swoje pytania prawne przez telefon.",
       price: "120 zł",
       priceSuffix: "/ 30 min konsultacji",
       features: [
         "Szybki kontakt z prawnikiem",
         "Natychmiastowa odpowiedź na pytania",
-        "Rozwiązanie drobnych problemów prawnych",
+        "Rozwiązanie drobnych problemów prawnych bez konieczności umawiania się na spotkanie",
       ],
       cta: "Umów konsultację",
+      calLink: "demo-it-legal/konsultacja-express",
+      calNamespace: "konsultacja-express",
     },
     {
       name: "Standard",
@@ -226,16 +236,18 @@ export const pricingData = {
       price: "199 zł",
       priceSuffix: "/ 1h konsultacji",
       features: [
-        "Szczegółowe omówienie Twojej sprawy",
-        "Odpowiedzi na wszystkie pytania",
         "Indywidualna konsultacja z prawnikiem",
-        "Rekomendacje dalszych działań",
+        "Szczegółowe omówienie Twojej sprawy",
+        "Odpowiedzi na wszystkie pytania dotyczące Twojego przypadku",
       ],
       cta: "Umów konsultację",
+      calLink: "demo-it-legal/standard",
+      calNamespace: "standard",
       highlighted: true,
     },
     {
       name: "Projekt lub abonament",
+      description: "[treść do uzupełnienia przez klienta]",
       priceSuffix: "Porozmawiajmy o szczegółach",
       cta: "Zapytaj o wycenę",
     },
@@ -320,8 +332,8 @@ export const knowledgeBaseData = {
 
 export const contactData = {
   sectionLabel: "Kontakt",
-  heading: "Skontaktuj się z nami",
-  subheading: "Umów bezpłatną konsultację. Odpowiemy w ciągu 24 godzin.",
+  heading: "Umów bezpłatną konsultację",
+  subheading: "Wybierz dogodny termin i zarezerwuj bezpłatną rozmowę o współpracy.",
   rodoText:
     "Wyrażam zgodę na przetwarzanie danych osobowych przez Administratora IT Legal Paweł Sokołowski z siedzibą w Warszawie.",
 } as const;
