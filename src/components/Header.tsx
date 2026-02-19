@@ -33,14 +33,14 @@ export default function Header() {
 
       {/* Desktop nav — starts where the white/photo area begins */}
       <nav
-        className="hidden lg:flex items-center justify-center gap-6 xl:gap-8 absolute top-1/2 -translate-y-1/2 left-[52%] xl:left-[56%] right-5 sm:right-8 xl:right-[max(2rem,calc((100vw-80rem)/2+2rem))]"
+        className="hidden lg:flex items-center justify-center gap-1 xl:gap-2 absolute top-1/2 -translate-y-1/2 left-[52%] xl:left-[56%] right-5 sm:right-8 xl:right-[max(2rem,calc((100vw-80rem)/2+2rem))]"
         aria-label="Nawigacja główna"
       >
         {navLinks.map((link) => (
           <a
             key={link.href}
             href={link.href}
-            className="text-[0.8rem] font-medium uppercase tracking-[0.15em] text-text-dark/80 hover:text-primary transition-colors whitespace-nowrap"
+            className="px-3 py-2 rounded-lg text-[0.8rem] font-medium uppercase tracking-[0.15em] text-text-dark/80 hover:text-primary hover:bg-primary/[0.06] transition-all duration-200 whitespace-nowrap"
           >
             {link.label}
           </a>
