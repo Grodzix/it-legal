@@ -80,18 +80,9 @@ export default function MobileNav() {
           <nav
             className="absolute top-0 right-0 h-full w-[min(20rem,85vw)] bg-[#F5F7FA] flex flex-col shadow-[-8px_0_30px_rgba(0,0,0,0.15)] animate-[slideInRight_280ms_cubic-bezier(0.32,0.72,0,1)_forwards]"
           >
-            {/* Header with logo + close */}
-            <div className="flex items-center justify-between px-7 pt-7 pb-2">
+            {/* Logo */}
+            <div className="px-7 pt-7 pb-2">
               <Logo id="mobile-nav-logo" />
-              <button
-                onClick={close}
-                className="flex items-center justify-center w-10 h-10 -mr-2 rounded-lg text-text-dark/60 hover:text-text-dark transition-colors"
-                aria-label="Zamknij menu"
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M18 6L6 18M6 6l12 12" />
-                </svg>
-              </button>
             </div>
 
             {/* Nav links */}
