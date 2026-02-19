@@ -31,7 +31,6 @@ export default function ScrollReveal({
     const inViewport = rect.top < window.innerHeight * 1.1 && rect.bottom > 0;
 
     if (inViewport) {
-      el.classList.add("revealed");
       return;
     }
 
