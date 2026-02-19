@@ -84,7 +84,7 @@ export default function MobileNav() {
       >
         {/* Backdrop */}
         <div
-          className={`absolute inset-0 bg-bg-dark/60 backdrop-blur-md transition-opacity duration-300 ${
+          className={`absolute inset-0 bg-black/50 transition-opacity duration-300 ${
             open ? "opacity-100" : "opacity-0"
           }`}
           onClick={close}
