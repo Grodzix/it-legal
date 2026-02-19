@@ -1,6 +1,5 @@
 import { heroData } from "@/lib/data";
 import HeroParticles from "./HeroParticles";
-import HeroStats from "./HeroStats";
 import PhonePopover from "./PhonePopover";
 import NoiseBackground from "./ui/NoiseBackground";
 
@@ -131,10 +130,6 @@ export default function HeroSection() {
           />
         </picture>
       </div>
-
-      {/* Floating stat badges — desktop only */}
-      <HeroStats />
-
 
       {/* Desktop main content */}
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-8 w-full flex-1 hidden lg:flex items-center lg:pt-0 lg:pb-0">

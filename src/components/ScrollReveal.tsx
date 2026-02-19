@@ -21,12 +21,21 @@ export default function ScrollReveal({
     const el = ref.current;
     if (!el) return;
 
-    // Immediately reveal if user prefers reduced motion
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) {
       el.classList.add("revealed");
       return;
     }
+
+    const rect = el.getBoundingClientRect();
+    const inViewport = rect.top < window.innerHeight * 1.1 && rect.bottom > 0;
+
+    if (inViewport) {
+      el.classList.add("revealed");
+      return;
+    }
+
+    el.classList.add("sr-init");
 
     const reveal = () => {
       if (el.classList.contains("revealed")) return;
@@ -49,10 +58,9 @@ export default function ScrollReveal({
 
     observer.observe(el);
 
-    // Also check after a short delay to catch anchor scroll navigation
     const timer = setTimeout(() => {
-      const rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight && rect.bottom > 0) {
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) {
         reveal();
         observer.unobserve(el);
       }

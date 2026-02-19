@@ -13,38 +13,28 @@ export default function MobileNav() {
   useEffect(() => {
     if (open) {
       scrollYRef.current = window.scrollY;
-      document.body.style.position = "fixed";
-      document.body.style.top = `-${scrollYRef.current}px`;
-      document.body.style.left = "0";
-      document.body.style.right = "0";
-      document.body.style.overflow = "hidden";
+      document.documentElement.style.setProperty("--scroll-lock-top", `-${scrollYRef.current}px`);
+      document.documentElement.classList.add("mobile-nav-open");
     } else {
-      document.body.style.position = "";
-      document.body.style.top = "";
-      document.body.style.left = "";
-      document.body.style.right = "";
-      document.body.style.overflow = "";
+      document.documentElement.classList.remove("mobile-nav-open");
       window.scrollTo(0, scrollYRef.current);
     }
     return () => {
-      document.body.style.position = "";
-      document.body.style.top = "";
-      document.body.style.left = "";
-      document.body.style.right = "";
-      document.body.style.overflow = "";
+      document.documentElement.classList.remove("mobile-nav-open");
     };
   }, [open]);
 
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") close(); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") close();
+    };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open, close]);
 
   return (
     <>
-      {/* Hamburger / X toggle */}
       <button
         onClick={() => setOpen((v) => !v)}
         className="relative z-[60] flex items-center justify-center w-11 h-11 -mr-2 rounded-lg lg:hidden"
@@ -71,89 +61,80 @@ export default function MobileNav() {
         </div>
       </button>
 
-      {/* Fullscreen overlay menu */}
-      <div
-        id="mobile-menu"
-        role="dialog"
-        aria-modal="true"
-        aria-label="Menu nawigacyjne"
-        className={`fixed inset-0 z-[55] lg:hidden transition-all duration-300 ${
-          open ? "visible" : "invisible"
-        }`}
-        onTouchMove={(e) => e.preventDefault()}
-      >
-        {/* Backdrop */}
+      {open && (
         <div
-          className={`absolute inset-0 bg-black/50 transition-opacity duration-300 ${
-            open ? "opacity-100" : "opacity-0"
-          }`}
-          onClick={close}
-          aria-hidden="true"
-        />
-
-        {/* Panel — slides from right */}
-        <nav
-          className={`absolute top-0 right-0 h-full w-[min(20rem,85vw)] bg-bg-light flex flex-col shadow-[-8px_0_30px_rgba(0,0,0,0.1)] transition-transform duration-300 ease-out ${
-            open ? "translate-x-0" : "translate-x-full"
-          }`}
+          id="mobile-menu"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Menu nawigacyjne"
+          className="fixed inset-0 z-[55] lg:hidden"
         >
-          {/* Logo */}
-          <div className="px-8 pt-8">
-            <Logo id="mobile-nav-logo" />
-          </div>
-
-          {/* Nav links */}
+          {/* Solid dark backdrop — no backdrop-blur, renders instantly */}
           <div
-            className="flex-1 flex flex-col pt-8 pb-8 px-8 overflow-y-auto overscroll-contain"
-            onTouchMove={(e) => e.stopPropagation()}
+            className="absolute inset-0 bg-[#0f172a]/70 animate-[fadeIn_200ms_ease-out_forwards]"
+            onClick={close}
+            aria-hidden="true"
+          />
+
+          {/* Panel sliding from right */}
+          <nav
+            className="absolute top-0 right-0 h-full w-[min(20rem,85vw)] bg-[#F5F7FA] flex flex-col shadow-[-8px_0_30px_rgba(0,0,0,0.15)] animate-[slideInRight_280ms_cubic-bezier(0.32,0.72,0,1)_forwards]"
           >
-            {navLinks.map((link, i) => (
-              <a
-                key={link.href}
-                href={link.href}
+            {/* Header with logo + close */}
+            <div className="flex items-center justify-between px-7 pt-7 pb-2">
+              <Logo id="mobile-nav-logo" />
+              <button
                 onClick={close}
-                className={`py-4 text-[1.05rem] font-medium text-text-dark border-b border-text-dark/[0.06] hover:text-primary transition-colors duration-200 ${
-                  open ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4"
-                }`}
-                style={{
-                  transitionDelay: open ? `${80 + i * 40}ms` : "0ms",
-                  transitionProperty: "color, opacity, transform",
-                  transitionDuration: open ? "400ms" : "150ms",
-                }}
+                className="flex items-center justify-center w-10 h-10 -mr-2 rounded-lg text-text-dark/60 hover:text-text-dark transition-colors"
+                aria-label="Zamknij menu"
               >
-                {link.label}
-              </a>
-            ))}
-
-            {/* CTA */}
-            <div
-              className={`mt-8 transition-all ${
-                open ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
-              }`}
-              style={{
-                transitionDelay: open ? `${80 + navLinks.length * 40 + 40}ms` : "0ms",
-                transitionDuration: open ? "400ms" : "150ms",
-              }}
-            >
-              <a
-                href="#kontakt"
-                onClick={close}
-                className="flex items-center justify-center gap-2 w-full rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-white shadow-md shadow-primary/20 active:scale-[0.98] transition-transform"
-              >
-                Umów konsultację
-              </a>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+              </button>
             </div>
-          </div>
 
-          {/* Footer accent */}
-          <div className="px-8 pb-8">
-            <div className="h-px bg-gradient-to-r from-primary/30 via-primary/10 to-transparent mb-4" />
-            <p className="text-[0.7rem] text-text-light tracking-wide">
-              IT Legal &middot; Kancelaria prawna
-            </p>
-          </div>
-        </nav>
-      </div>
+            {/* Nav links */}
+            <div
+              className="flex-1 flex flex-col pt-4 pb-8 px-7 overflow-y-auto overscroll-contain"
+            >
+              {navLinks.map((link, i) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={close}
+                  className="py-4 text-[1.05rem] font-medium text-text-dark border-b border-text-dark/[0.06] hover:text-primary transition-colors duration-200 animate-[slideInLink_350ms_ease-out_forwards] opacity-0"
+                  style={{ animationDelay: `${60 + i * 50}ms` }}
+                >
+                  {link.label}
+                </a>
+              ))}
+
+              {/* CTA */}
+              <div
+                className="mt-8 animate-[slideInLink_350ms_ease-out_forwards] opacity-0"
+                style={{ animationDelay: `${60 + navLinks.length * 50 + 60}ms` }}
+              >
+                <a
+                  href="#kontakt"
+                  onClick={close}
+                  className="flex items-center justify-center gap-2 w-full rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-white shadow-md shadow-primary/20 active:scale-[0.98] transition-transform"
+                >
+                  Umów konsultację
+                </a>
+              </div>
+            </div>
+
+            {/* Footer accent */}
+            <div className="px-7 pb-7">
+              <div className="h-px bg-gradient-to-r from-primary/30 via-primary/10 to-transparent mb-4" />
+              <p className="text-[0.7rem] text-text-light tracking-wide">
+                IT Legal &middot; Kancelaria prawna
+              </p>
+            </div>
+          </nav>
+        </div>
+      )}
     </>
   );
 }

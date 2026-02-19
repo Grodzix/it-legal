@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { DM_Sans, DM_Serif_Display } from "next/font/google";
-import CookieConsent from "@/components/CookieConsent";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -188,7 +187,6 @@ export default function RootLayout({
           Przejdź do treści
         </a>
         {children}
-        <CookieConsent />
       </body>
     </html>
   );

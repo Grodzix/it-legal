@@ -66,10 +66,10 @@ export default function SplashScreen() {
 
     const t1 = setTimeout(() => {
       if (svg) {
-        svg.style.transition = "transform 420ms cubic-bezier(0.4, 0, 0.2, 1)";
+        svg.style.transition = "transform 350ms cubic-bezier(0.4, 0, 0.2, 1)";
         svg.style.transform = `translate(${targetX}px, ${targetY}px) scale(1)`;
       }
-    }, 300);
+    }, 200);
 
     const t2 = setTimeout(() => {
       if (svg) {
@@ -78,13 +78,13 @@ export default function SplashScreen() {
         svg.style.left = `${targetX}px`;
         svg.style.transform = "none";
       }
-    }, 800);
+    }, 600);
 
     const t3 = setTimeout(() => {
       if (headerLogo) headerLogo.style.opacity = "1";
       setRemoved(true);
       document.body.style.overflow = "";
-    }, 1400);
+    }, 900);
 
     return () => {
       clearTimeout(t1);

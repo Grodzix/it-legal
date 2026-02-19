@@ -132,78 +132,114 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ===== SCROLL REVEAL ===== */
+/* SSR-visible by default — JS adds .sr-init for below-fold elements */
+.reveal,
+.reveal-left,
+.reveal-right {
+  opacity: 1;
+  transform: none;
+}
+
 /* When navigating via hash anchor from a subpage, fast fade-in without movement */
-html.hash-nav .reveal,
-html.hash-nav .reveal-left,
-html.hash-nav .reveal-right {
+html.hash-nav .reveal.sr-init,
+html.hash-nav .reveal-left.sr-init,
+html.hash-nav .reveal-right.sr-init {
   transform: none !important;
   transition: opacity 150ms ease-out !important;
 }
 
-.reveal {
+/* JS-activated animation for below-viewport elements */
+.reveal.sr-init {
   opacity: 0;
   transform: translateY(24px);
   transition: opacity 0.45s ease-out, transform 0.45s ease-out;
 }
 
-.reveal.revealed {
+.reveal.sr-init.revealed {
   opacity: 1;
   transform: translateY(0);
 }
 
-.reveal-left {
+.reveal-left.sr-init {
   opacity: 0;
   transform: translateX(-24px);
   transition: opacity 0.45s ease-out, transform 0.45s ease-out;
 }
 
-.reveal-left.revealed {
+.reveal-left.sr-init.revealed {
   opacity: 1;
   transform: translateX(0);
 }
 
-.reveal-right {
+.reveal-right.sr-init {
   opacity: 0;
   transform: translateX(24px);
   transition: opacity 0.45s ease-out, transform 0.45s ease-out;
 }
 
-.reveal-right.revealed {
+.reveal-right.sr-init.revealed {
   opacity: 1;
   transform: translateX(0);
 }
 
 /* Stagger children */
-.reveal-stagger > .reveal:nth-child(1) { transition-delay: 0ms; }
-.reveal-stagger > .reveal:nth-child(2) { transition-delay: 100ms; }
-.reveal-stagger > .reveal:nth-child(3) { transition-delay: 200ms; }
-.reveal-stagger > .reveal:nth-child(4) { transition-delay: 300ms; }
-.reveal-stagger > .reveal:nth-child(5) { transition-delay: 400ms; }
-.reveal-stagger > .reveal:nth-child(6) { transition-delay: 500ms; }
-.reveal-stagger > .reveal:nth-child(7) { transition-delay: 600ms; }
-.reveal-stagger > .reveal:nth-child(8) { transition-delay: 700ms; }
+.reveal-stagger > .reveal.sr-init:nth-child(1) { transition-delay: 0ms; }
+.reveal-stagger > .reveal.sr-init:nth-child(2) { transition-delay: 100ms; }
+.reveal-stagger > .reveal.sr-init:nth-child(3) { transition-delay: 200ms; }
+.reveal-stagger > .reveal.sr-init:nth-child(4) { transition-delay: 300ms; }
+.reveal-stagger > .reveal.sr-init:nth-child(5) { transition-delay: 400ms; }
+.reveal-stagger > .reveal.sr-init:nth-child(6) { transition-delay: 500ms; }
+.reveal-stagger > .reveal.sr-init:nth-child(7) { transition-delay: 600ms; }
+.reveal-stagger > .reveal.sr-init:nth-child(8) { transition-delay: 700ms; }
 
 /* Mobile: faster reveals so quick-scrolling doesn't feel sluggish */
 @media (max-width: 1023px) {
-  .reveal {
+  .reveal.sr-init {
     transform: translateY(16px);
     transition: opacity 0.3s ease-out, transform 0.3s ease-out;
   }
-  .reveal-left {
+  .reveal-left.sr-init {
     transform: translateX(-16px);
     transition: opacity 0.3s ease-out, transform 0.3s ease-out;
   }
-  .reveal-right {
+  .reveal-right.sr-init {
     transform: translateX(16px);
     transition: opacity 0.3s ease-out, transform 0.3s ease-out;
   }
-  .reveal-stagger > .reveal:nth-child(2) { transition-delay: 60ms; }
-  .reveal-stagger > .reveal:nth-child(3) { transition-delay: 120ms; }
-  .reveal-stagger > .reveal:nth-child(4) { transition-delay: 180ms; }
-  .reveal-stagger > .reveal:nth-child(5) { transition-delay: 240ms; }
-  .reveal-stagger > .reveal:nth-child(6) { transition-delay: 300ms; }
-  .reveal-stagger > .reveal:nth-child(7) { transition-delay: 360ms; }
-  .reveal-stagger > .reveal:nth-child(8) { transition-delay: 420ms; }
+  .reveal-stagger > .reveal.sr-init:nth-child(2) { transition-delay: 60ms; }
+  .reveal-stagger > .reveal.sr-init:nth-child(3) { transition-delay: 120ms; }
+  .reveal-stagger > .reveal.sr-init:nth-child(4) { transition-delay: 180ms; }
+  .reveal-stagger > .reveal.sr-init:nth-child(5) { transition-delay: 240ms; }
+  .reveal-stagger > .reveal.sr-init:nth-child(6) { transition-delay: 300ms; }
+  .reveal-stagger > .reveal.sr-init:nth-child(7) { transition-delay: 360ms; }
+  .reveal-stagger > .reveal.sr-init:nth-child(8) { transition-delay: 420ms; }
+}
+
+/* ===== MOBILE NAV ===== */
+html.mobile-nav-open {
+  overflow: hidden;
+}
+html.mobile-nav-open body {
+  position: fixed;
+  top: var(--scroll-lock-top, 0);
+  left: 0;
+  right: 0;
+  overflow: hidden;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes slideInLink {
+  from { opacity: 0; transform: translateX(12px); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
 /* ===== HEADER ===== */
@@ -248,27 +284,24 @@ html.hash-nav .reveal-right {
 
 /* ===== HERO TEXT REVEAL ===== */
 .hero-word {
-  opacity: 0;
-  animation: heroTextReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: heroTextReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @keyframes heroTextReveal {
   from {
     opacity: 0;
     transform: translateY(28px);
-    filter: blur(6px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
-    filter: blur(0);
   }
 }
 
 /* ===== HERO TEXT REVEAL — MOBILE (no blur, less movement, faster) ===== */
 @media (max-width: 1023px) {
   .hero-word {
-    animation: heroTextRevealMobile 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: heroTextRevealMobile 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 }
 
@@ -356,7 +389,7 @@ select:focus-visible {
 
 /* ===== SPLASH SCREEN ===== */
 .splash-overlay {
-  animation: splashFade 400ms ease-out 600ms forwards;
+  animation: splashFade 300ms ease-out 400ms forwards;
 }
 
 @keyframes splashFade {
@@ -375,9 +408,9 @@ select:focus-visible {
     scroll-behavior: auto !important;
   }
 
-  .reveal,
-  .reveal-left,
-  .reveal-right {
+  .reveal.sr-init,
+  .reveal-left.sr-init,
+  .reveal-right.sr-init {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
