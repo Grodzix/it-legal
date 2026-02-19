@@ -22,11 +22,11 @@ export default function SplashScreen() {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           document.querySelectorAll(".reveal, .reveal-left, .reveal-right").forEach((el) => {
-            const rect = el.getBoundingClientRect();
-            if (rect.top < window.innerHeight && rect.bottom > 0) {
-              el.classList.add("revealed");
-            }
+            el.classList.add("revealed");
           });
+
+          const target = document.getElementById(window.location.hash.slice(1));
+          if (target) target.scrollIntoView({ behavior: "instant" });
 
           setTimeout(() => {
             document.documentElement.classList.remove("hash-nav");

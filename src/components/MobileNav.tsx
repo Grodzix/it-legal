@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { navLinks } from "@/lib/data";
+import Logo from "./Logo";
 
 export default function MobileNav() {
   const [open, setOpen] = useState(false);
@@ -96,9 +97,14 @@ export default function MobileNav() {
             open ? "translate-x-0" : "translate-x-full"
           }`}
         >
+          {/* Logo */}
+          <div className="px-8 pt-8">
+            <Logo id="mobile-nav-logo" />
+          </div>
+
           {/* Nav links */}
           <div
-            className="flex-1 flex flex-col pt-24 pb-8 px-8 overflow-y-auto overscroll-contain"
+            className="flex-1 flex flex-col pt-8 pb-8 px-8 overflow-y-auto overscroll-contain"
             onTouchMove={(e) => e.stopPropagation()}
           >
             {navLinks.map((link, i) => (

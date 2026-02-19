@@ -34,6 +34,7 @@ export default function TestimonialsSection() {
 
   const touchStartX = useRef(0);
   const touchStartY = useRef(0);
+  const touchStartTime = useRef(0);
   const dragLocked = useRef<"horizontal" | "vertical" | null>(null);
 
   useEffect(() => {
@@ -105,6 +106,7 @@ export default function TestimonialsSection() {
     (e: React.TouchEvent) => {
       touchStartX.current = e.touches[0].clientX;
       touchStartY.current = e.touches[0].clientY;
+      touchStartTime.current = Date.now();
       dragLocked.current = null;
       if (isMobile && !isAnimating) {
         setIsDragging(true);
@@ -120,9 +122,9 @@ export default function TestimonialsSection() {
       const dx = e.touches[0].clientX - touchStartX.current;
       const dy = e.touches[0].clientY - touchStartY.current;
       if (!dragLocked.current) {
-        if (Math.abs(dx) > 8 || Math.abs(dy) > 8) {
+        if (Math.abs(dx) > 12 || Math.abs(dy) > 12) {
           dragLocked.current =
-            Math.abs(dx) > Math.abs(dy) ? "horizontal" : "vertical";
+            Math.abs(dx) >= Math.abs(dy) ? "horizontal" : "vertical";
         }
         return;
       }
@@ -132,18 +134,24 @@ export default function TestimonialsSection() {
     [isMobile, isDragging]
   );
 
+  const resetDrag = useCallback(() => {
+    setIsDragging(false);
+    setDragOffsetX(0);
+    dragLocked.current = null;
+  }, []);
+
   const handleTouchEnd = useCallback(
     (e: React.TouchEvent) => {
       if (isMobile) {
-        const THRESHOLD = 80;
+        const elapsed = Math.max(Date.now() - touchStartTime.current, 1);
+        const velocity = Math.abs(dragOffsetX) / elapsed;
+        const THRESHOLD = velocity > 0.4 ? 40 : 100;
         if (isDragging && Math.abs(dragOffsetX) > THRESHOLD) {
-          setIsDragging(false);
-          setDragOffsetX(0);
+          resetDrag();
           if (dragOffsetX < 0) next();
           else prev();
         } else {
-          setIsDragging(false);
-          setDragOffsetX(0);
+          resetDrag();
         }
       } else {
         const deltaX = touchStartX.current - e.changedTouches[0].clientX;
@@ -152,11 +160,15 @@ export default function TestimonialsSection() {
           if (deltaX > 0) next();
           else prev();
         }
+        dragLocked.current = null;
       }
-      dragLocked.current = null;
     },
-    [isMobile, isDragging, dragOffsetX, next, prev]
+    [isMobile, isDragging, dragOffsetX, next, prev, resetDrag]
   );
+
+  const handleTouchCancel = useCallback(() => {
+    resetDrag();
+  }, [resetDrag]);
 
   function renderCard(testimonial: (typeof testimonials)[number]) {
     return (
@@ -226,10 +238,11 @@ export default function TestimonialsSection() {
         <div className="mx-auto max-w-4xl">
           <div className="relative">
             <div
-              className="relative h-[440px] sm:h-[430px] lg:h-[400px]"
+              className="relative h-[440px] sm:h-[430px] lg:h-[400px] touch-pan-y"
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
+              onTouchCancel={handleTouchCancel}
             >
               {testimonials.map((testimonial, index) => {
                 const position = stack.indexOf(index);

@@ -172,7 +172,7 @@ export default function RootLayout({
         />
         <script
           dangerouslySetInnerHTML={{
-            __html: `history.scrollRestoration='manual';window.scrollTo(0,0)`,
+            __html: `history.scrollRestoration='manual';if(!location.hash){window.scrollTo(0,0)}`,
           }}
         />
         <script

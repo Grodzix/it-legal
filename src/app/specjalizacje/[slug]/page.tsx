@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import Link from "next/link";
 import { specializations } from "@/lib/data";
 import {
   specArticles,
@@ -110,7 +109,7 @@ export default async function SpecializationPage({ params }: Props) {
         />
         <div className="relative mx-auto max-w-4xl px-5 sm:px-8">
           <ScrollReveal>
-            <Link
+            <a
               href="/#specjalizacje"
               className="inline-flex items-center gap-2 text-primary hover:text-primary-dark transition-colors text-sm font-semibold mb-8 group"
             >
@@ -129,7 +128,7 @@ export default async function SpecializationPage({ params }: Props) {
                 <path d="M19 12H5M12 19l-7-7 7-7" />
               </svg>
               Specjalizacje
-            </Link>
+            </a>
           </ScrollReveal>
 
           <ScrollReveal>
@@ -218,7 +217,7 @@ export default async function SpecializationPage({ params }: Props) {
                 Skontaktuj si&#281; z nami, aby om&oacute;wi&#263; szczeg&oacute;&#322;y
                 wsp&oacute;&#322;pracy. Pierwsza konsultacja jest bezp&#322;atna.
               </p>
-              <Link
+              <a
                 href="/#kontakt"
                 className="inline-flex items-center gap-2.5 bg-primary text-white font-semibold px-8 py-3.5 rounded-xl hover:bg-primary-dark transition-colors shadow-lg shadow-primary/25 group"
               >
@@ -237,7 +236,7 @@ export default async function SpecializationPage({ params }: Props) {
                 >
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
-              </Link>
+              </a>
             </div>
           </ScrollReveal>
         </div>

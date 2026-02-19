@@ -203,3 +203,4 @@ dist
 next-env.d.ts
 /.unlighthouse
 /.unlighthouse-2
+/.old-website
