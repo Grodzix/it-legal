@@ -174,7 +174,7 @@ export default function ContactSection() {
                 <div className="pt-6 mt-6 border-t border-bg-medium">
                   <div className="flex items-start gap-4">
                     <div className="flex-1 min-w-0">
-                      <p className="font-medium text-text-dark mb-3">Godziny dostępności</p>
+                      <h4 className="text-lg font-semibold text-text-dark mb-3">Godziny dostępności</h4>
                       <dl className="text-sm text-text-medium space-y-1.5">
                         <div className="flex justify-between gap-4">
                           <dt>Poniedziałek</dt>
