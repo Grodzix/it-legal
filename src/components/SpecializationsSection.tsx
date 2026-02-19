@@ -169,7 +169,7 @@ export default function SpecializationsSection() {
                 Szukasz wsparcia w&nbsp;innym obszarze prawa IT?
               </p>
               <a
-                href="#kontakt"
+                href="/#kontakt"
                 className="inline-flex items-center gap-2.5 bg-primary text-white font-semibold px-7 py-3 rounded-xl hover:bg-primary-dark transition-colors shadow-lg shadow-primary/25 group/btn"
               >
                 Skontaktuj si&#281;

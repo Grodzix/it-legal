@@ -130,7 +130,7 @@ export default function PricingSection() {
                   </button>
                 ) : (
                   <a
-                    href="#formularz"
+                    href="/#formularz"
                     className={`mt-8 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all ${
                       tier.highlighted
                         ? "bg-white text-primary hover:bg-white/90"
@@ -153,7 +153,7 @@ export default function PricingSection() {
             {pricingData.footnote}.{" "}
             Każda wycena jest indywidualna i zależy od zakresu oraz
             złożoności sprawy.{" "}
-            <a href="#kontakt" className="text-primary font-medium hover:underline">
+            <a href="/#kontakt" className="text-primary font-medium hover:underline">
               Skontaktuj się
             </a>{" "}
             po szczegóły.

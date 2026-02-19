@@ -15,11 +15,11 @@ export const siteConfig = {
 } as const;
 
 export const navLinks = [
-  { label: "O nas", href: "#o-nas" },
-  { label: "Specjalizacje", href: "#specjalizacje" },
-  { label: "Cennik", href: "#cennik" },
-  { label: "Baza wiedzy", href: "#baza-wiedzy" },
-  { label: "Kontakt", href: "#kontakt" },
+  { label: "O nas", href: "/#o-nas" },
+  { label: "Specjalizacje", href: "/#specjalizacje" },
+  { label: "Cennik", href: "/#cennik" },
+  { label: "Baza wiedzy", href: "/#baza-wiedzy" },
+  { label: "Kontakt", href: "/#kontakt" },
 ] as const;
 
 export const heroData = {

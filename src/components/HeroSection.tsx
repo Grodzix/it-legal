@@ -64,7 +64,7 @@ export default function HeroSection() {
             style={{ animationDelay: "600ms" }}
           >
             <a
-              href="#kontakt"
+              href="/#kontakt"
               className="flex items-center justify-center gap-2.5 w-full rounded-full bg-primary-dark py-4 sm:py-[18px] text-[0.95rem] sm:text-base font-semibold text-white shadow-lg shadow-primary/25 active:scale-[0.98] transition-transform"
             >
               <svg
@@ -188,7 +188,7 @@ export default function HeroSection() {
                 speed={1.2}
               >
                 <a
-                  href="#kontakt"
+                  href="/#kontakt"
                   className="group relative inline-flex items-center gap-3 rounded-full pl-8 pr-1.5 py-1.5 text-[0.95rem] font-semibold text-text-dark transition-all duration-200 active:scale-[0.98]"
                 >
                   <span className="absolute inset-0 rounded-full bg-gradient-to-r from-white/85 via-white/80 to-white/20 backdrop-blur-sm pointer-events-none" />
@@ -238,7 +238,7 @@ export default function HeroSection() {
           </span>
         </div>
         <a
-          href="#o-nas"
+          href="/#o-nas"
           className="flex flex-col items-center gap-2 text-text-light hover:text-primary transition-colors group"
           aria-label="Przewiń do sekcji O nas"
         >

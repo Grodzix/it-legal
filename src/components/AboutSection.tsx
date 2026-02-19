@@ -83,7 +83,7 @@ export default function AboutSection() {
           <ScrollReveal>
             <div className="text-center mt-12">
               <a
-                href="#kontakt"
+                href="/#kontakt"
                 className="inline-flex items-center gap-2.5 bg-primary text-white font-semibold px-8 py-3.5 rounded-xl hover:bg-primary-dark transition-colors shadow-lg shadow-primary/25"
               >
                 Umów konsultację

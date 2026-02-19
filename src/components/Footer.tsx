@@ -38,7 +38,7 @@ export default function Footer() {
         },
         {
           label: "Baza wiedzy",
-          href: "#baza-wiedzy",
+          href: "/#baza-wiedzy",
         },
       ],
     },
