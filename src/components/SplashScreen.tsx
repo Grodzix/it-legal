@@ -102,7 +102,7 @@ export default function SplashScreen() {
 
   return (
     <>
-      <div className="splash-overlay fixed inset-0 z-[100] bg-white" />
+      <div className="splash-overlay fixed inset-0 z-[100] bg-white pointer-events-none" />
 
       <svg
         ref={svgRef}
