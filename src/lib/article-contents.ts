@@ -333,7 +333,6 @@ export const articleContents: Record<string, ArticleContent> = {
     conclusion:
       "Zakładanie firmy IT w Polsce to proces obejmujący wiele aspektów prawnych. Wybór odpowiedniej formy prawnej, rejestracja w odpowiednich instytucjach, przestrzeganie przepisów podatkowych oraz dbanie o ochronę danych osobowych to kluczowe elementy. Nasza kancelaria oferuje kompleksowe wsparcie w zakładaniu i prowadzeniu firm IT.",
     sources: [
-      "https://www.podatki.gov.pl/dzialalnosc-gospodarcza/rejestracja-dzialalnosci-gospodarczej/",
       "https://www.biznes.gov.pl/pl/portal/00167",
     ],
   },

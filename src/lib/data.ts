@@ -252,7 +252,7 @@ export const pricingData = {
       cta: "Zapytaj o wycenę",
     },
   ] as PricingTier[],
-  footnote: "Wszystkie ceny netto ",
+  footnote: "Wszystkie ceny netto",
 } as const;
 
 export interface BlogPost {

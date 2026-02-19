@@ -25,6 +25,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const scrollYRef = useRef(0);
+  const isLockedRef = useRef(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -34,17 +35,27 @@ export default function Header() {
   }, []);
 
   useEffect(() => {
-    if (mobileOpen) {
-      lockBody(scrollYRef);
-    } else {
+    return () => {
+      if (isLockedRef.current) unlockBody(scrollYRef);
+    };
+  }, []);
+
+  const handleToggle = useCallback(() => {
+    if (isLockedRef.current) {
       unlockBody(scrollYRef);
+      isLockedRef.current = false;
+      setMobileOpen(false);
+    } else {
+      lockBody(scrollYRef);
+      isLockedRef.current = true;
+      setMobileOpen(true);
     }
-    return () => unlockBody(scrollYRef);
-  }, [mobileOpen]);
+  }, []);
 
   const handleNavClick = useCallback(() => {
-    setMobileOpen(false);
     unlockBody(scrollYRef);
+    isLockedRef.current = false;
+    setMobileOpen(false);
   }, []);
 
   return (
@@ -58,7 +69,7 @@ export default function Header() {
           <Logo id="header-logo" />
 
           <button
-            onClick={() => setMobileOpen((v) => !v)}
+            onClick={handleToggle}
             className="lg:hidden flex flex-col justify-center items-center w-10 h-10 gap-[5px]"
             aria-label={mobileOpen ? "Zamknij menu" : "Otwórz menu"}
             aria-expanded={mobileOpen}

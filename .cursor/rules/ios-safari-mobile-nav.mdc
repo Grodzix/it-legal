@@ -1,0 +1,102 @@
+---
+description: iOS Safari gotchas for mobile navigation, fixed positioning, scroll lock, and backdrop-filter
+globs: **/*.tsx
+alwaysApply: false
+---
+
+# iOS Safari — Mobile Navigation & Fixed Elements
+
+## 1. NIGDY nie zagnieżdżaj `position: fixed` overlay wewnątrz elementu z `backdrop-filter`
+
+iOS Safari traktuje `backdrop-filter` jako nowy containing block. `fixed` dziecko staje się de facto `absolute` — ograniczone do granic rodzica.
+
+```tsx
+// ❌ BAD — overlay uwięziony w headerze na iOS Safari
+<header className="fixed z-50 backdrop-blur-md">
+  <button onClick={toggle}>☰</button>
+  <div className="fixed inset-0 z-50">Menu</div>
+</header>
+
+// ✅ GOOD — overlay jako rodzeństwo, poza stacking context headera
+<>
+  <header className="fixed z-[60]">
+    <button onClick={toggle}>☰</button>
+  </header>
+  {open && <nav className="fixed inset-0 z-[55]">Menu</nav>}
+</>
+```
+
+Dotyczy też: `transform`, `will-change`, `filter`, `contain` — każde z nich tworzy nowy containing block na iOS Safari.
+
+## 2. Scroll lock na iOS: `position: fixed` zamiast `overflow: hidden`
+
+`overflow: hidden` na body **nie działa na iOS Safari**.
+
+```tsx
+// ❌ BAD — iOS Safari ignoruje overflow: hidden na body
+document.body.style.overflow = "hidden";
+
+// ✅ GOOD — jedyny niezawodny sposób na iOS
+const scrollY = window.scrollY;
+document.body.style.position = "fixed";
+document.body.style.top = `-${scrollY}px`;
+document.body.style.left = "0";
+document.body.style.right = "0";
+
+// Przywracanie:
+document.body.style.position = "";
+document.body.style.top = "";
+document.body.style.left = "";
+document.body.style.right = "";
+window.scrollTo(0, scrollY);
+```
+
+## 3. `pointer-events: none` w `@keyframes` nie działa na iOS Safari
+
+To dyskretna właściwość — nie jest animowalna. Chrome ją stosuje (niestandardowo), Safari ignoruje.
+
+```css
+/* ❌ BAD — iOS Safari zignoruje pointer-events w keyframes */
+@keyframes fadeOut {
+  to { opacity: 0; pointer-events: none; }
+}
+
+/* ✅ GOOD — pointer-events jako zwykła właściwość CSS */
+.overlay { pointer-events: none; }
+```
+
+## 4. Unikaj `backdrop-filter` na fullscreen overlay mobile
+
+Powoduje rendering issues i glitchy przejścia na iOS Safari. Użyj solidnego tła.
+
+```tsx
+// ❌ BAD
+<div className="fixed inset-0 bg-white/95 backdrop-blur-md">
+
+// ✅ GOOD
+<div className="fixed inset-0 bg-white">
+```
+
+## 5. Z-index hierarchy dla mobile nav
+
+```
+z-[55]  — mobile overlay (pokrywa stronę, pod headerem)
+z-[60]  — header (nad overlayem — hamburger zawsze klikalny)
+z-[100] — splash screen / modale / skip-link
+```
+
+Header MUSI mieć wyższy z-index niż overlay. Hamburger jest w headerze, więc jest automatycznie nad overlayem.
+
+## 6. Odblokuj body synchronicznie przy nawigacji
+
+Nie czekaj na React re-render — odblokuj body w click handler, żeby nawigacja do anchora zadziałała natychmiast.
+
+```tsx
+const handleNavClick = useCallback(() => {
+  setOpen(false);
+  // Sync unlock — nie czekaj na useEffect
+  document.body.style.position = "";
+  document.body.style.top = "";
+  window.scrollTo(0, savedScrollY);
+}, []);
+```

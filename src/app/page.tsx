@@ -18,6 +18,7 @@ const KnowledgeBaseSection = dynamic(
   () => import("@/components/KnowledgeBaseSection")
 );
 const ContactSection = dynamic(() => import("@/components/ContactSection"));
+const CookieConsent = dynamic(() => import("@/components/CookieConsent"));
 
 export default function Home() {
   return (
@@ -36,6 +37,7 @@ export default function Home() {
         <ContactSection />
       </main>
       <Footer />
+      <CookieConsent />
     </>
   );
 }

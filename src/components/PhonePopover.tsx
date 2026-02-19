@@ -157,7 +157,7 @@ export default function PhonePopover({ children }: PhonePopoverProps) {
 
         {/* Working hours */}
         <p className="text-center text-xs text-gray-400 mt-5">
-          Pon-Pt 8:00-20:00 · Sob 9:00-14:00
+          Pon, Śr, Czw 12:00–19:30<br />Wt 15:00–19:30 · Pt 13:00–19:30
         </p>
       </div>
     </div>
