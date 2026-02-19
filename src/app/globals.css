@@ -331,6 +331,16 @@ select:focus-visible {
   color: var(--color-text-dark);
 }
 
+/* ===== SPLASH SCREEN ===== */
+.splash-overlay {
+  animation: splashFade 400ms ease-out 600ms forwards;
+}
+
+@keyframes splashFade {
+  from { opacity: 1; }
+  to { opacity: 0; pointer-events: none; }
+}
+
 /* ===== REDUCED MOTION ===== */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -353,6 +363,11 @@ select:focus-visible {
   .hero-word {
     opacity: 1 !important;
     animation: none !important;
+  }
+
+  .splash-overlay {
+    animation: none !important;
+    opacity: 0 !important;
   }
 
   .marquee-track {

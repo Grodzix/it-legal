@@ -26,9 +26,9 @@ export default function AboutSection() {
         <div>
           <ScrollReveal>
             <div className="text-center mb-12">
-              <h3 className="text-4xl sm:text-5xl lg:text-6xl font-bold stat-gradient-text leading-tight">
+              <h2 id="about-heading" className="text-4xl sm:text-5xl lg:text-6xl font-bold stat-gradient-text leading-tight">
                 {teamData.name}
-              </h3>
+              </h2>
               <p className="text-primary font-semibold mt-3 text-lg tracking-wide uppercase">
                 {teamData.role}
               </p>

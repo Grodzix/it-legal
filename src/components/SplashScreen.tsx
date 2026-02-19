@@ -5,9 +5,8 @@ import { useState, useEffect, useRef } from "react";
 const SPLASH_CENTER_SIZE = 120;
 
 export default function SplashScreen() {
-  const [phase, setPhase] = useState<"idle" | "visible" | "animating" | "done">(
-    "idle"
-  );
+  const [removed, setRemoved] = useState(false);
+  const svgRef = useRef<SVGSVGElement>(null);
   const posRef = useRef({
     centerX: 0,
     centerY: 0,
@@ -15,11 +14,10 @@ export default function SplashScreen() {
     targetY: 0,
     centerScale: SPLASH_CENTER_SIZE / 56,
   });
-  const svgRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
     if (window.location.hash) {
-      setPhase("done");
+      setRemoved(true);
 
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
@@ -58,17 +56,23 @@ export default function SplashScreen() {
       };
     }
 
-    const raf = requestAnimationFrame(() => setPhase("visible"));
+    const svg = svgRef.current;
+    const { centerX, centerY, targetX, targetY, centerScale } = posRef.current;
 
-    const t1 = setTimeout(() => setPhase("animating"), 300);
+    if (svg) {
+      svg.style.transform = `translate(${centerX}px, ${centerY}px) scale(${centerScale})`;
+      svg.style.opacity = "1";
+    }
 
-    // After transform animation settles, switch to layout positioning so
-    // the splash SVG goes through the same rendering/rounding path as the
-    // header logo (layout engine, not transform engine).
-    const t2 = setTimeout(() => {
-      const svg = svgRef.current;
+    const t1 = setTimeout(() => {
       if (svg) {
-        const { targetX, targetY } = posRef.current;
+        svg.style.transition = "transform 420ms cubic-bezier(0.4, 0, 0.2, 1)";
+        svg.style.transform = `translate(${targetX}px, ${targetY}px) scale(1)`;
+      }
+    }, 300);
+
+    const t2 = setTimeout(() => {
+      if (svg) {
         svg.style.transition = "none";
         svg.style.top = `${targetY}px`;
         svg.style.left = `${targetX}px`;
@@ -78,12 +82,11 @@ export default function SplashScreen() {
 
     const t3 = setTimeout(() => {
       if (headerLogo) headerLogo.style.opacity = "1";
-      setPhase("done");
+      setRemoved(true);
       document.body.style.overflow = "";
     }, 1400);
 
     return () => {
-      cancelAnimationFrame(raf);
       clearTimeout(t1);
       clearTimeout(t2);
       clearTimeout(t3);
@@ -95,21 +98,11 @@ export default function SplashScreen() {
     };
   }, []);
 
-  if (phase === "done") return null;
-
-  const isAnimating = phase === "animating";
-  const { centerX, centerY, targetX, targetY, centerScale } = posRef.current;
+  if (removed) return null;
 
   return (
     <>
-      <div
-        className="fixed inset-0 z-[100] bg-white"
-        style={{
-          opacity: isAnimating ? 0 : 1,
-          transition: isAnimating ? "opacity 350ms ease-out 700ms" : "none",
-          pointerEvents: isAnimating ? "none" : "auto",
-        }}
-      />
+      <div className="splash-overlay fixed inset-0 z-[100] bg-white" />
 
       <svg
         ref={svgRef}
@@ -120,15 +113,7 @@ export default function SplashScreen() {
         fill="none"
         aria-hidden="true"
         className="fixed top-0 left-0 z-[101] pointer-events-none h-14 w-auto"
-        style={{
-          transform: isAnimating
-            ? `translate(${targetX}px, ${targetY}px) scale(1)`
-            : `translate(${centerX}px, ${centerY}px) scale(${centerScale})`,
-          opacity: phase === "idle" ? 0 : 1,
-          transition: isAnimating
-            ? "transform 420ms cubic-bezier(0.4, 0, 0.2, 1)"
-            : "opacity 200ms ease-out",
-        }}
+        style={{ opacity: 0 }}
       >
         <path d="M24 46C36.1503 46 46 36.1503 46 24C46 11.8497 36.1503 2 24 2C11.8497 2 2 11.8497 2 24C2 36.1503 11.8497 46 24 46Z" stroke="currentColor" strokeOpacity="0.5" strokeWidth="1.25" strokeMiterlimit="10" className="text-text-dark" />
         <path d="M18.3259 13.5579C15.2101 18.1347 19.818 21.1615 24.0001 21.1615C28.1821 21.1615 31.5724 24.5517 31.5724 28.7338C31.5724 32.9159 28.1821 36.3061 24.0001 36.3061C19.818 36.3061 16.4277 32.9159 16.4277 28.7338" stroke="currentColor" strokeWidth="1.5" strokeMiterlimit="10" className="text-text-dark" />

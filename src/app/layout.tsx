@@ -158,6 +158,8 @@ export default function RootLayout({
   return (
     <html lang="pl" suppressHydrationWarning>
       <head>
+        <link rel="preconnect" href="https://app.cal.eu" />
+        <link rel="dns-prefetch" href="https://app.cal.eu" />
         <link rel="icon" href="/favicon.ico" sizes="48x48" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="icon" href="/favicon-96x96.png" type="image/png" sizes="96x96" />

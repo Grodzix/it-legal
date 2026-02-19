@@ -10,21 +10,69 @@ Zaimplementuj pixel-perfect animację splash screen z logo, które pojawia się 
 
 ### Fazy
 
-1. **idle** — komponent zamontowany, logo niewidoczne (opacity: 0)
-2. **visible** — logo pojawia się (fade-in) na środku ekranu w powiększeniu
-3. **animating** — logo przelatuje na pozycję headera, zmniejszając się do natywnego rozmiaru
-4. **done** — splash unmountuje się, header logo przejmuje (single-frame swap)
+Overlay (biały tło) jest sterowany **wyłącznie przez CSS animation** — nie przez React state. React zarządza tylko logo SVG i usunięciem z DOM.
+
+1. **mount** — overlay widoczny (CSS class `.splash-overlay`), logo niewidoczne (opacity: 0 inline)
+2. **logo visible** — JS ustawia logo opacity: 1, logo na środku ekranu w powiększeniu
+3. **logo animating** — logo przelatuje na pozycję headera (JS setTimeout + CSS transition). Równolegle overlay faduje przez CSS animation (niezależnie od JS).
+4. **removed** — `setRemoved(true)` → splash unmountuje się, header logo przejmuje (single-frame swap)
 
 ### Timeline
 
-- `0ms` — mount, blokada scroll, ukrycie header logo (`opacity: 0`), pomiar pozycji
-- `~16ms` (rAF) — phase "visible", fade-in logo na środku
-- `300ms` — phase "animating", logo leci do headera (420ms transition)
-- `~720ms` — animacja transform zakończona
+- `0ms` — mount, blokada scroll, ukrycie header logo (`opacity: 0`), pomiar pozycji. Overlay opaque via CSS (`.splash-overlay` class).
+- `~16ms` (rAF) — logo pojawia się (opacity 1 via JS) na środku ekranu w powiększeniu
+- `300ms` — logo leci do headera (420ms CSS transition)
+- `600ms` — overlay zaczyna CSS fade (niezależnie od JS hydration!)
+- `~720ms` — animacja transform logo zakończona
 - `800ms` — **de-transform**: zamiana `transform: translate()` na `top/left` positioning (eliminuje różnicę rendering path)
-- `1400ms` — phase "done": header logo `opacity: 1`, splash unmount, odblokowanie scroll
+- `~1000ms` — overlay w pełni transparentny → content pod spodem widoczny → LCP
+- `1400ms` — header logo `opacity: 1`, splash unmount (`setRemoved(true)`), odblokowanie scroll
 
 ## Krytyczne zasady (każda rozwiązuje konkretny bug)
+
+### 0. Overlay MUSI fadować przez CSS animation, NIE przez React state (LCP killer)
+
+Biały overlay (`fixed inset-0 z-[100] bg-white`) z `opacity: 1` sterowaną przez React state **blokuje LCP** — Lighthouse widzi biały ekran dopóki JS nie zhydratuje i nie zmieni stanu. Content pod spodem (hero h1) nie liczy się jako LCP bo jest zakryty opaque overlayem.
+
+Overlay musi używać CSS `animation` zdefiniowanej w globals.css, która startuje od razu po załadowaniu CSS (niezależnie od hydration). React steruje tylko usunięciem z DOM po zakończeniu animacji.
+
+```css
+/* globals.css */
+.splash-overlay {
+  animation: splashFade 400ms ease-out 600ms forwards;
+}
+
+@keyframes splashFade {
+  from { opacity: 1; }
+  to { opacity: 0; pointer-events: none; }
+}
+```
+
+```tsx
+// ❌ React state steruje opacity — zależne od hydration, blokuje LCP
+<div className="fixed inset-0 z-[100] bg-white"
+  style={{
+    opacity: isAnimating ? 0 : 1,
+    transition: isAnimating ? "opacity 350ms ease-out 700ms" : "none",
+  }}
+/>
+
+// ✅ CSS animation — startuje od razu, niezależnie od JS
+<div className="splash-overlay fixed inset-0 z-[100] bg-white" />
+```
+
+**Timeline overlay vs logo:**
+- 0–600ms: overlay opaque (logo pojawia się i zaczyna lecieć)
+- 600–1000ms: overlay faduje przez CSS (hero content staje się widoczny ~800ms → LCP)
+- 1400ms: React usuwa splash z DOM
+
+Dodaj do `@media (prefers-reduced-motion: reduce)`:
+```css
+.splash-overlay {
+  animation: none !important;
+  opacity: 0 !important;
+}
+```
 
 ### 1. SVG splash MUSI być identyczne z SVG headera
 
@@ -140,4 +188,24 @@ Jeśli URL ma hash (#sekcja), pomiń animację — ustaw phase na "done" natychm
 
 ## Accessibility
 
-Obsłuż `prefers-reduced-motion` — wyłącz animację splash lub skróć ją do minimum.
+Obsłuż `prefers-reduced-motion` — w globals.css:
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  .splash-overlay {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+}
+```
+
+Dzięki temu overlay jest natychmiastowo transparentny → zero splash, zero opóźnienia contentu.
+
+## Performance (Lighthouse)
+
+Kluczowe pułapki, które obniżają score:
+
+1. **Overlay sterowany React state blokuje LCP** — patrz zasada #0
+2. **Nigdy nie ładuj ciężkich 3rd-party (Cal.com, embedy) eagerly** — użyj IntersectionObserver
+3. **Preconnect** do zewnętrznych domen użytych w embedach (`<link rel="preconnect" href="...">`)
+4. **Nie używaj `dynamic()` bez `{ ssr: false }` dla poniżej-foldu** — bez `ssr: false` chunk i tak jest ładowany w initial bundle

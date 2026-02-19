@@ -326,7 +326,7 @@ export default function TestimonialsSection() {
           </div>
 
           <div className="flex flex-col items-center gap-3 mt-8 lg:hidden">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-0">
               {testimonials.map((_, i) => (
                 <button
                   key={i}
@@ -335,13 +335,17 @@ export default function TestimonialsSection() {
                     const stepsNeeded = (stack.indexOf(i) + total) % total;
                     if (stepsNeeded > 0) next();
                   }}
-                  className={`rounded-full transition-all duration-300 ${
-                    stack[0] === i
-                      ? "w-6 h-2 bg-primary"
-                      : "w-2 h-2 bg-text-light/40"
-                  }`}
+                  className="relative flex items-center justify-center w-8 h-8"
                   aria-label={`Rekomendacja ${i + 1}`}
-                />
+                >
+                  <span
+                    className={`block rounded-full transition-all duration-300 ${
+                      stack[0] === i
+                        ? "w-6 h-2 bg-primary"
+                        : "w-2 h-2 bg-text-light/40"
+                    }`}
+                  />
+                </button>
               ))}
             </div>
             <div
