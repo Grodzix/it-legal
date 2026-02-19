@@ -349,7 +349,7 @@ export default function TestimonialsSection() {
               ))}
             </div>
             <div
-              className={`flex items-center gap-1.5 text-text-light text-xs transition-opacity duration-500 ${
+              className={`flex items-center gap-1.5 text-text-medium text-xs transition-opacity duration-500 ${
                 showSwipeHint ? "opacity-100" : "opacity-0"
               }`}
             >

@@ -66,7 +66,7 @@ export default function HeroSection() {
           >
             <a
               href="#kontakt"
-              className="flex items-center justify-center gap-2.5 w-full rounded-full bg-primary py-4 sm:py-[18px] text-[0.95rem] sm:text-base font-semibold text-white shadow-lg shadow-primary/25 active:scale-[0.98] transition-transform"
+              className="flex items-center justify-center gap-2.5 w-full rounded-full bg-primary-dark py-4 sm:py-[18px] text-[0.95rem] sm:text-base font-semibold text-white shadow-lg shadow-primary/25 active:scale-[0.98] transition-transform"
             >
               <svg
                 width="18"

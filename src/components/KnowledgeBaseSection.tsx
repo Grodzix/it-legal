@@ -79,7 +79,7 @@ export default function KnowledgeBaseSection() {
           <div className="flex justify-center mt-10">
             <button
               onClick={() => setVisibleCount(posts.length)}
-              className="inline-flex items-center gap-2 rounded-full border-2 border-primary/20 px-8 py-3 text-sm font-semibold text-primary hover:bg-primary hover:text-white transition-all cursor-pointer"
+              className="inline-flex items-center gap-2 rounded-full border-2 border-primary/20 px-8 py-3 text-sm font-semibold text-primary-dark hover:bg-primary hover:text-white transition-all cursor-pointer"
             >
               Załaduj więcej
               <svg

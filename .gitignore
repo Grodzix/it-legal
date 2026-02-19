@@ -202,3 +202,4 @@ dist
 .open-next/
 next-env.d.ts
 /.unlighthouse
+/.unlighthouse-2
