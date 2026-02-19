@@ -1,16 +1,37 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { navLinks } from "@/lib/data";
 
 export default function MobileNav() {
   const [open, setOpen] = useState(false);
+  const scrollYRef = useRef(0);
 
   const close = useCallback(() => setOpen(false), []);
 
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    if (open) {
+      scrollYRef.current = window.scrollY;
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollYRef.current}px`;
+      document.body.style.left = "0";
+      document.body.style.right = "0";
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      document.body.style.overflow = "";
+      window.scrollTo(0, scrollYRef.current);
+    }
+    return () => {
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      document.body.style.overflow = "";
+    };
   }, [open]);
 
   useEffect(() => {
@@ -55,9 +76,10 @@ export default function MobileNav() {
         role="dialog"
         aria-modal="true"
         aria-label="Menu nawigacyjne"
-        className={`fixed inset-0 z-50 lg:hidden transition-all duration-300 ${
+        className={`fixed inset-0 z-[55] lg:hidden transition-all duration-300 ${
           open ? "visible" : "invisible"
         }`}
+        onTouchMove={(e) => e.preventDefault()}
       >
         {/* Backdrop */}
         <div
@@ -75,7 +97,10 @@ export default function MobileNav() {
           }`}
         >
           {/* Nav links */}
-          <div className="flex-1 flex flex-col pt-24 pb-8 px-8 overflow-y-auto">
+          <div
+            className="flex-1 flex flex-col pt-24 pb-8 px-8 overflow-y-auto overscroll-contain"
+            onTouchMove={(e) => e.stopPropagation()}
+          >
             {navLinks.map((link, i) => (
               <a
                 key={link.href}
