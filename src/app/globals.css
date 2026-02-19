@@ -215,6 +215,13 @@ html.hash-nav .reveal-right.sr-init {
   .reveal-stagger > .reveal.sr-init:nth-child(8) { transition-delay: 420ms; }
 }
 
+/* ===== MOBILE NAV ===== */
+html.mobile-nav-open,
+html.mobile-nav-open body {
+  overflow: hidden;
+  touch-action: none;
+}
+
 /* ===== HEADER ===== */
 .header-scrolled {
   background: rgba(245, 247, 250, 0.95);
