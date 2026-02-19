@@ -140,46 +140,39 @@ h1, h2, h3, h4, h5, h6 {
   transform: none;
 }
 
-/* When navigating via hash anchor from a subpage, fast fade-in without movement */
+/* When navigating via hash anchor from a subpage, fast fade-in */
 html.hash-nav .reveal.sr-init,
 html.hash-nav .reveal-left.sr-init,
 html.hash-nav .reveal-right.sr-init {
-  transform: none !important;
   transition: opacity 150ms ease-out !important;
 }
 
 /* JS-activated animation for below-viewport elements */
 .reveal.sr-init {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.45s ease-out, transform 0.45s ease-out;
+  transition: opacity 0.45s ease-out;
 }
 
 .reveal.sr-init.revealed {
   opacity: 1;
-  transform: translateY(0);
 }
 
 .reveal-left.sr-init {
   opacity: 0;
-  transform: translateX(-24px);
-  transition: opacity 0.45s ease-out, transform 0.45s ease-out;
+  transition: opacity 0.45s ease-out;
 }
 
 .reveal-left.sr-init.revealed {
   opacity: 1;
-  transform: translateX(0);
 }
 
 .reveal-right.sr-init {
   opacity: 0;
-  transform: translateX(24px);
-  transition: opacity 0.45s ease-out, transform 0.45s ease-out;
+  transition: opacity 0.45s ease-out;
 }
 
 .reveal-right.sr-init.revealed {
   opacity: 1;
-  transform: translateX(0);
 }
 
 /* Stagger children */
@@ -195,16 +188,13 @@ html.hash-nav .reveal-right.sr-init {
 /* Mobile: faster reveals so quick-scrolling doesn't feel sluggish */
 @media (max-width: 1023px) {
   .reveal.sr-init {
-    transform: translateY(16px);
-    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+    transition: opacity 0.3s ease-out;
   }
   .reveal-left.sr-init {
-    transform: translateX(-16px);
-    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+    transition: opacity 0.3s ease-out;
   }
   .reveal-right.sr-init {
-    transform: translateX(16px);
-    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+    transition: opacity 0.3s ease-out;
   }
   .reveal-stagger > .reveal.sr-init:nth-child(2) { transition-delay: 60ms; }
   .reveal-stagger > .reveal.sr-init:nth-child(3) { transition-delay: 120ms; }
@@ -257,31 +247,22 @@ html.hash-nav .reveal-right.sr-init {
 
 /* ===== HERO TEXT REVEAL ===== */
 .hero-word {
-  animation: heroTextReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: heroFadeIn 0.6s ease-out both;
 }
 
-@keyframes heroTextReveal {
+@keyframes heroFadeIn {
   from {
-    transform: translateY(28px);
+    opacity: 0;
   }
   to {
-    transform: translateY(0);
+    opacity: 1;
   }
 }
 
-/* ===== HERO TEXT REVEAL — MOBILE (no blur, less movement, faster) ===== */
+/* ===== HERO TEXT REVEAL — MOBILE (faster) ===== */
 @media (max-width: 1023px) {
   .hero-word {
-    animation: heroTextRevealMobile 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-}
-
-@keyframes heroTextRevealMobile {
-  from {
-    transform: translateY(16px);
-  }
-  to {
-    transform: translateY(0);
+    animation: heroFadeIn 0.4s ease-out both;
   }
 }
 
@@ -382,7 +363,6 @@ select:focus-visible {
   .reveal-left.sr-init,
   .reveal-right.sr-init {
     opacity: 1 !important;
-    transform: none !important;
     transition: none !important;
   }
 
