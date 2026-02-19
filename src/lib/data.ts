@@ -332,8 +332,8 @@ export const knowledgeBaseData = {
 
 export const contactData = {
   sectionLabel: "Kontakt",
-  heading: "Umów bezpłatną konsultację",
-  subheading: "Wybierz dogodny termin i zarezerwuj bezpłatną rozmowę o współpracy.",
+  heading: "Skontaktuj się z nami",
+  subheading: "Umów wizytę lub napisz — odpowiemy najszybciej jak to możliwe.",
   rodoText:
     "Wyrażam zgodę na przetwarzanie danych osobowych przez Administratora IT Legal Paweł Sokołowski z siedzibą w Warszawie.",
 } as const;

@@ -13,10 +13,11 @@ const initialState: ContactFormState = {
 
 const MESSAGE_MAX = 2000;
 
-/** Strip all characters except digits, +, spaces, hyphens, parens */
 function sanitizePhone(value: string) {
   return value.replace(/[^\d+\s()-]/g, "");
 }
+
+const CAL_BOOKING_URL = `${siteConfig.calOrigin}/demo-it-legal?theme=light`;
 
 export default function ContactSection() {
   const [state, formAction, pending] = useActionState(
@@ -74,11 +75,6 @@ export default function ContactSection() {
       };
 
       w.Cal("init", siteConfig.calNamespace, { origin: siteConfig.calOrigin });
-      w.Cal.ns[siteConfig.calNamespace]("inline", {
-        elementOrSelector: "#cal-inline-embed",
-        config: { layout: "month_view", useSlotsViewOnSmallScreen: "true", theme: "light" },
-        calLink: siteConfig.calLink,
-      });
       w.Cal.ns[siteConfig.calNamespace]("ui", calUi);
 
       w.Cal("init", "konsultacja-express", { origin: siteConfig.calOrigin });
@@ -120,6 +116,7 @@ export default function ContactSection() {
       className="py-12 sm:py-16"
       aria-labelledby="contact-heading"
     >
+      <div id="formularz" className="scroll-mt-24" />
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <ScrollReveal className="text-center mb-10">
           <p className="section-label mb-4">{contactData.sectionLabel}</p>
@@ -134,91 +131,99 @@ export default function ContactSection() {
           </p>
         </ScrollReveal>
 
-        <ScrollReveal className="mb-6">
-          <div
-            id="cal-inline-embed"
-            style={{ width: "100%", overflow: "auto" }}
-          />
-        </ScrollReveal>
-
-        <div id="formularz" className="scroll-mt-32" />
-        <ScrollReveal className="text-center mb-10">
-          <h3 className="text-xl font-semibold text-text-dark">
-            Lub napisz do nas
-          </h3>
-        </ScrollReveal>
-
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:items-stretch">
-          {/* Left: contact info */}
-          <ScrollReveal direction="left" className="lg:col-span-2 h-full">
-            <div className="flex flex-col gap-8 h-full">
-              <div className="glass rounded-2xl p-8 shadow-md flex-1">
-                <h3 className="text-lg font-semibold text-text-dark mb-6">
-                  Dane kontaktowe
-                </h3>
-                <div className="space-y-5">
-                  <a
-                    href={`mailto:${siteConfig.email}`}
-                    className="flex items-center gap-4 text-text-medium hover:text-primary transition-colors group"
-                  >
-                    <span className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                        <polyline points="22,6 12,13 2,6" />
-                      </svg>
-                    </span>
-                    <span>{siteConfig.email}</span>
-                  </a>
-
-                  <a
-                    href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}
-                    className="flex items-center gap-4 text-text-medium hover:text-primary transition-colors group"
-                  >
-                    <span className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                      </svg>
-                    </span>
-                    <span>{siteConfig.phone}</span>
-                  </a>
-
-                  <div className="flex items-center gap-4 text-text-medium">
-                    <span className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10 text-primary">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                        <circle cx="12" cy="10" r="3" />
-                      </svg>
-                    </span>
-                    <span>{siteConfig.address}</span>
-                  </div>
-
+          <ScrollReveal direction="left" className="lg:col-span-2 h-full flex flex-col gap-6">
+            <div className="glass rounded-2xl p-8 shadow-md flex-1">
+              <h3 className="text-lg font-semibold text-text-dark mb-6">
+                Dane kontaktowe
+              </h3>
+              <div className="space-y-5">
+                <a
+                  href={`mailto:${siteConfig.email}`}
+                  className="flex items-center gap-4 text-text-medium hover:text-primary transition-colors group"
+                >
+                  <span className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors flex-shrink-0">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                      <polyline points="22,6 12,13 2,6" />
+                    </svg>
+                  </span>
+                  <span>{siteConfig.email}</span>
+                </a>
+                <a
+                  href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}
+                  className="flex items-center gap-4 text-text-medium hover:text-primary transition-colors group"
+                >
+                  <span className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors flex-shrink-0">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                    </svg>
+                  </span>
+                  <span>{siteConfig.phone}</span>
+                </a>
+                <div className="flex items-center gap-4 text-text-medium">
+                  <span className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10 text-primary flex-shrink-0">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                      <circle cx="12" cy="10" r="3" />
+                    </svg>
+                  </span>
+                  <span>{siteConfig.address}</span>
                 </div>
 
-                <div className="mt-8 pt-6 border-t border-bg-medium">
+                <div className="pt-6 mt-6 border-t border-bg-medium">
                   <div className="flex items-start gap-4">
-                    <span className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10 text-primary flex-shrink-0 mt-0.5">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                        <circle cx="12" cy="12" r="10" />
-                        <polyline points="12 6 12 12 16 14" />
-                      </svg>
-                    </span>
-                    <div className="text-sm text-text-medium space-y-1">
-                      <p className="font-medium text-text-dark mb-2">Godziny dostępności</p>
-                      <p>Poniedziałek: 12:00 – 19:30</p>
-                      <p>Wtorek: 15:00 – 19:30</p>
-                      <p>Środa: 12:00 – 19:30</p>
-                      <p>Czwartek: 12:00 – 19:30</p>
-                      <p>Piątek: 13:00 – 19:30</p>
-                      <p className="text-text-light">Sob – Ndz: niedostępne</p>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-text-dark mb-3">Godziny dostępności</p>
+                      <dl className="text-sm text-text-medium space-y-1.5">
+                        <div className="flex justify-between gap-4">
+                          <dt>Poniedziałek</dt>
+                          <dd className="text-right tabular-nums">12:00 – 19:30</dd>
+                        </div>
+                        <div className="flex justify-between gap-4">
+                          <dt>Wtorek</dt>
+                          <dd className="text-right tabular-nums">15:00 – 19:30</dd>
+                        </div>
+                        <div className="flex justify-between gap-4">
+                          <dt>Środa</dt>
+                          <dd className="text-right tabular-nums">12:00 – 19:30</dd>
+                        </div>
+                        <div className="flex justify-between gap-4">
+                          <dt>Czwartek</dt>
+                          <dd className="text-right tabular-nums">12:00 – 19:30</dd>
+                        </div>
+                        <div className="flex justify-between gap-4">
+                          <dt>Piątek</dt>
+                          <dd className="text-right tabular-nums">13:00 – 19:30</dd>
+                        </div>
+                      </dl>
                     </div>
                   </div>
                 </div>
               </div>
-
             </div>
+
+            <a
+              href={CAL_BOOKING_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 rounded-xl bg-primary px-6 py-4 text-base font-semibold text-white hover:bg-primary-dark transition-colors shadow-lg"
+            >
+              <span className="flex items-center justify-center w-11 h-11 rounded-lg bg-white/20 flex-shrink-0">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                  <line x1="16" y1="2" x2="16" y2="6" />
+                  <line x1="8" y1="2" x2="8" y2="6" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
+                </svg>
+              </span>
+              <div className="text-left min-w-0">
+                <span className="block">Zarezerwuj termin</span>
+                <span className="text-sm font-normal opacity-90">Wybierz rodzaj konsultacji</span>
+              </div>
+            </a>
           </ScrollReveal>
 
-          {/* Right: form */}
           <ScrollReveal direction="right" className="lg:col-span-3">
             <div className="glass rounded-2xl p-8 sm:p-10 shadow-md">
               {state.success ? (
