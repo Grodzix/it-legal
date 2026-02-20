@@ -1,9 +1,17 @@
+"use client";
+
+import { useRef } from "react";
 import { pricingData } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
+import { useCalInit } from "@/lib/useCalInit";
 
 export default function PricingSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  useCalInit(sectionRef);
+
   return (
     <section
+      ref={sectionRef}
       id="cennik"
       className="py-12 sm:py-16"
       aria-labelledby="pricing-heading"

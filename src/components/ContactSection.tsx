@@ -1,9 +1,10 @@
 "use client";
 
-import { useActionState, useState, useCallback, useEffect, useRef } from "react";
+import { useActionState, useState, useCallback, useRef } from "react";
 import { submitContactForm, type ContactFormState } from "@/actions/contact";
 import { contactData, siteConfig } from "@/lib/data";
 import ScrollReveal from "./ScrollReveal";
+import { useCalInit } from "@/lib/useCalInit";
 
 const initialState: ContactFormState = {
   success: false,
@@ -26,77 +27,8 @@ export default function ContactSection() {
   );
   const [messageLen, setMessageLen] = useState(0);
 
-  const calInitialized = useRef(false);
   const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const initCal = () => {
-      if (calInitialized.current) return;
-      calInitialized.current = true;
-
-      const w = window as any;
-      if (w.Cal) return;
-
-      (function (C: any, A: string, L: string) {
-        const p = function (a: any, ar: any) { a.q.push(ar); };
-        const d = C.document;
-        C.Cal = C.Cal || function (...args: any[]) {
-          const cal = C.Cal;
-          const ar = args;
-          if (!cal.loaded) {
-            cal.ns = {};
-            cal.q = cal.q || [];
-            d.head.appendChild(d.createElement("script")).src = A;
-            cal.loaded = true;
-          }
-          if (ar[0] === L) {
-            const api: any = function (...a: any[]) { p(api, a); };
-            const namespace = ar[1];
-            api.q = api.q || [];
-            if (typeof namespace === "string") {
-              cal.ns[namespace] = cal.ns[namespace] || api;
-              p(cal.ns[namespace], ar);
-              p(cal, ["initNamespace", namespace]);
-            } else p(cal, ar);
-            return;
-          }
-          p(cal, ar);
-        };
-      })(window, `${siteConfig.calOrigin}/embed/embed.js`, "init");
-
-      const calUi = {
-        theme: "light",
-        cssVarsPerTheme: { light: { "cal-brand": "#4985C9" } },
-        hideEventTypeDetails: false,
-        layout: "month_view",
-      };
-
-      w.Cal("init", siteConfig.calNamespace, { origin: siteConfig.calOrigin });
-      w.Cal.ns[siteConfig.calNamespace]("ui", calUi);
-
-      w.Cal("init", "konsultacja-express", { origin: siteConfig.calOrigin });
-      w.Cal.ns["konsultacja-express"]("ui", calUi);
-
-      w.Cal("init", "standard", { origin: siteConfig.calOrigin });
-      w.Cal.ns["standard"]("ui", calUi);
-    };
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          initCal();
-          observer.disconnect();
-        }
-      },
-      { rootMargin: "200px" }
-    );
-
-    observer.observe(section);
-    return () => observer.disconnect();
-  }, []);
+  useCalInit(sectionRef);
 
   const handlePhoneInput = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
